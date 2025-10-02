@@ -1,7 +1,8 @@
 :root {
     --clr-dark-blue: 0, 26, 52;
     --clr-sunny: 249, 178, 3;
-    --text: 255, 255, 255
+    --text: 255, 255, 255;
+    --text-grey: 221, 221, 221;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,6 +23,21 @@ body {
   font-family: "Ubuntu", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.app-main-hidden-on-mobile {
+  display: block;
+}
+
+@media (max-width: 991px) {
+  body {
+    background: url('/images/mobile-background.webp') no-repeat center center / cover,
+      rgb(var(--clr-dark-blue));
+  }
+
+  .app-main-hidden-on-mobile {
+    display: none;
+  }
 }
 
 * {

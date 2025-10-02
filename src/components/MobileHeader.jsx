@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useId } from 'react';
+import { useEffect, useState, useId, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 
 const Header = styled.header.withConfig({
@@ -47,14 +47,17 @@ const CompanyNameWide = styled.span`
   text-transform: uppercase;
   line-height: 1.2;
   flex: 1;
+  display: inline-flex;
+  flex-direction: column;
+  white-space: pre-line;
 `;
 
 const ContactRow = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 0.5rem 1.5rem;
   font-size: 0.85rem;
-  color: rgba(245, 247, 251, 0.9);
+  color: rgba(var(--text), 0.5);
 `;
 
 const ContactItem = styled.span`
@@ -64,6 +67,7 @@ const ContactItem = styled.span`
 const IconRow = styled.div`
   display: flex;
   gap: 0.75rem;
+  justify-content: space-between;
 `;
 
 const IconButton = styled.a`
@@ -121,13 +125,17 @@ const CondensedName = styled.span`
 const CondensedRight = styled.div`
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 0.75rem;
+  margin-left: auto;
 `;
 
 const PhoneText = styled.a`
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.02em;
   color: inherit;
+  font-size: 0.75rem;
+  white-space: nowrap;
 `;
 
 const Burger = styled.button`
@@ -140,6 +148,7 @@ const Burger = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  color: #ffffff;
 
   &::before,
   &::after,
@@ -277,32 +286,11 @@ function WhatsappIcon() {
 function TelegramIcon() {
   const clipId = useId();
   return (
-    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <g clipPath={`url(#${clipId})`}>
-        <circle cx="16" cy="16" r="16" fill="white" />
-        <path
-          d="M23.6566 8.56675C23.0116 8.1085 22.1279 8.12387 20.3605 8.15458C20.1658 8.15797 19.965 8.16157 19.7578 8.16487L18.9305 8.17797C17.1258 8.20604 14.8708 8.23538 12.7064 8.25404C11.6265 8.26324 10.5887 8.26997 9.70756 8.27286C8.82643 8.27575 8.12768 8.2733 7.73156 8.26311C7.32987 8.25272 6.93237 8.24763 6.5837 8.48677C6.23504 8.72591 6.14909 9.10242 6.08188 9.41739C6.0347 9.63791 5.98009 9.88339 5.89164 10.135C5.79228 10.4208 5.63486 10.735 5.45403 11.1332C5.34268 11.3773 5.22303 11.6366 5.09859 11.9287C4.95263 12.2742 4.79245 12.6821 4.64226 13.1803C4.33205 14.2085 4.09529 15.6906 4.14313 17.7374C4.19039 19.7426 4.56721 21.8997 5.46614 24.1113L5.70172 24.6896C5.79453 24.9163 5.88275 25.133 5.97857 25.3352C6.10758 25.602 6.23821 25.8302 6.39741 26.0261C6.92125 26.672 7.7061 26.8631 8.19011 26.8866C9.3415 26.9397 10.7181 26.5148 13.2811 25.4751C16.1324 24.3217 19.9897 22.56 22.9319 20.7766L23.6411 20.3557C24.0835 20.0855 24.4946 19.8372 24.853 19.5612C26.0848 18.6069 26.6353 17.6125 26.7025 16.2333C26.7308 15.6515 26.6642 15.0214 26.6157 14.5345C26.6065 14.4412 26.5979 14.3498 26.5904 14.261C26.4547 12.6643 26.2461 11.5207 25.8489 10.6594C25.4371 9.76573 24.8396 9.12661 23.6566 8.56675Z"
-          fill="#1A1A1B"
-        />
-        <path
-          d="M11.7515 18.4617L12.4715 20.7887L14.4768 18.9813L18.7415 22.5647C19.4752 23.1869 20.5548 22.7533 20.7707 21.8127L23.3934 10.342C23.5999 9.44844 22.7621 8.65524 21.8974 8.90516L8.29591 12.8451C7.3315 13.125 7.25544 14.4377 8.17539 14.8337L11.7515 16.3782V18.4617Z"
-          fill="#F5F7FB"
-        />
-        <path
-          d="M11.7518 16.3796L20.2093 11.8682L12.6502 17.0383L11.7518 16.3796Z"
-          fill="#1A1A1B"
-        />
-        <path
-          d="M11.7515 18.4612V16.3789L14.678 18.0889L11.7515 18.4612Z"
-          fill="#1A1A1B"
-        />
-      </g>
-      <defs>
-        <clipPath id={clipId}>
-          <rect width="32" height="32" fill="white" />
-        </clipPath>
-      </defs>
-    </svg>
+                        <svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fillRule="evenodd" clipRule="evenodd"
+                                d="M16.5 32C7.66344 32 0.5 24.8366 0.5 16C0.5 7.16344 7.66344 0 16.5 0C25.3366 0 32.5 7.16344 32.5 16C32.5 24.8366 25.3366 32 16.5 32ZM17.1919 12.0074C15.7589 12.6034 12.8949 13.8371 8.59992 15.7083C7.90248 15.9856 7.53714 16.257 7.50388 16.5223C7.44767 16.9706 8.00915 17.1472 8.77374 17.3876C8.87774 17.4203 8.9855 17.4542 9.09598 17.4901C9.84822 17.7346 10.8601 18.0207 11.3862 18.0321C11.8633 18.0424 12.3959 17.8457 12.9839 17.4419C16.9968 14.7331 19.0683 13.3639 19.1983 13.3344C19.2901 13.3136 19.4172 13.2874 19.5034 13.3639C19.5895 13.4405 19.5811 13.5855 19.5719 13.6244C19.5163 13.8615 17.3123 15.9106 16.1717 16.971C15.8161 17.3015 15.5639 17.536 15.5124 17.5896C15.3969 17.7096 15.2791 17.823 15.166 17.9321C14.4672 18.6058 13.9431 19.111 15.195 19.936C15.7967 20.3325 16.2781 20.6603 16.7584 20.9874C17.2829 21.3446 17.806 21.7009 18.4829 22.1446C18.6554 22.2576 18.8201 22.375 18.9805 22.4894C19.5909 22.9246 20.1393 23.3155 20.8168 23.2532C21.2105 23.217 21.6172 22.8468 21.8237 21.7427C22.3118 19.1335 23.2712 13.4801 23.4929 11.1505C23.5123 10.9464 23.4879 10.6851 23.4683 10.5705C23.4486 10.4558 23.4076 10.2924 23.2586 10.1715C23.082 10.0283 22.8095 9.99805 22.6877 10.0001C22.1335 10.01 21.2834 10.3056 17.1919 12.0074Z"
+                                fill="white" />
+                        </svg>
   );
 }
 
@@ -340,8 +328,46 @@ export default function MobileHeader({
   mapHref = '#map',
   scrollThreshold = 40,
   condensedCompanyName = 'ВКУ',
+  onHeightChange,
+  onCondensedChange,
 }) {
   const condensed = useScrollTrigger(scrollThreshold);
+  const headerRef = useRef(null);
+
+  const notifyHeight = useCallback(() => {
+    if (!onHeightChange || !headerRef.current) return;
+    onHeightChange(headerRef.current.getBoundingClientRect().height);
+  }, [onHeightChange]);
+
+  useEffect(() => {
+    notifyHeight();
+  }, [condensed, notifyHeight]);
+
+  useEffect(() => {
+    if (onCondensedChange) {
+      onCondensedChange(condensed);
+    }
+  }, [condensed, onCondensedChange]);
+
+  useEffect(() => {
+    if (!onHeightChange || typeof window === 'undefined') return;
+    const element = headerRef.current;
+    if (!element) return;
+
+    let resizeObserver;
+    if (typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(() => notifyHeight());
+      resizeObserver.observe(element);
+    } else {
+      const handleResize = () => notifyHeight();
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+
+    return () => {
+      resizeObserver?.disconnect();
+    };
+  }, [onHeightChange, notifyHeight]);
 
   const iconLinks = [
     { key: 'phone', href: phoneHref, label: 'Позвонить', icon: <PhoneIcon /> },
@@ -351,13 +377,14 @@ export default function MobileHeader({
     { key: 'map', href: mapHref, label: 'Показать на карте', icon: <MapIcon /> },
   ];
 
+  const companyNameStacked = companyName.replace(/\s+/g, '\n');
+
   return (
-    <Header condensed={condensed}>
+    <Header ref={headerRef} condensed={condensed}>
       {condensed ? (
         <CondensedBar>
           <CondensedBrand>
             <LogoSmall src={condensedLogoSrc} alt="логотип компании ВКУ" />
-            <CondensedName>{condensedCompanyName}</CondensedName>
           </CondensedBrand>
           <CondensedRight>
             <PhoneText href={phoneHref}>{phoneDisplay}</PhoneText>
@@ -370,7 +397,7 @@ export default function MobileHeader({
         <WideContent>
           <BrandRow>
             <LogoLarge src={logoSymbolSrc} alt="логотип компании ВКУ" />
-            <CompanyNameWide>{companyName}</CompanyNameWide>
+            <CompanyNameWide>{companyNameStacked}</CompanyNameWide>
           </BrandRow>
           <ContactRow>
             <ContactItem>{address}</ContactItem>
