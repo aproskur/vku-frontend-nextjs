@@ -3,12 +3,11 @@
     --clr-sunny: 249, 178, 3;
     --text: 255, 255, 255;
     --text-grey: 221, 221, 221;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-
-  }
+    --yellow: 251, 188, 5;
+    --mobile-layer-bg: rgba(15, 21, 29, 0.58);
+    --mobile-layer-bg-strong: rgba(15, 21, 29, 0.75);
+    --mobile-layer-overlay: rgba(10, 14, 20, 0.38);
+    --mobile-layer-border: rgba(245, 247, 251, 0.14);
 }
 
 html,
@@ -20,7 +19,7 @@ body {
 body {
   color: rgb(var(--text));
   background: rgb(var(--clr-dark-blue));
-  font-family: "Ubuntu", sans-serif;
+  font-family: var(--font-ubuntu), "Ubuntu", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -3,14 +3,17 @@
 import { useEffect, useState, useId, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 
+const MOBILE_LAYER_BG = 'var(--mobile-layer-bg)';
+const MOBILE_LAYER_BG_STRONG = 'var(--mobile-layer-bg-strong)';
+const MOBILE_LAYER_OVERLAY = 'var(--mobile-layer-overlay)';
+
 const Header = styled.header.withConfig({
   shouldForwardProp: (prop) => prop !== 'condensed',
 })`
   position: fixed;
   inset: 0 auto auto 0;
   width: 100%;
-  background: rgba(21, 25, 31, ${({ condensed }) => (condensed ? 0.92 : 0.7)});
-  backdrop-filter: blur(${({ condensed }) => (condensed ? '6px' : '3px')});
+  background: ${({ condensed }) => (condensed ? MOBILE_LAYER_BG_STRONG : MOBILE_LAYER_BG)};
   padding: ${({ condensed }) => (condensed ? '0.5rem 0.9rem' : '1rem 1.25rem 1.25rem')};
   box-shadow: ${({ condensed }) => (condensed ? '0 10px 25px rgba(0, 0, 0, 0.25)' : 'none')};
   z-index: 10;
@@ -36,16 +39,14 @@ const BrandRow = styled.div`
 `;
 
 const LogoLarge = styled.img`
-  width: 68px;
+  width: 76.03px;
   height: auto;
 `;
 
 const CompanyNameWide = styled.span`
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-size: 1.25rem;
+  font-weight: 500;
   text-transform: uppercase;
-  line-height: 1.2;
   flex: 1;
   display: inline-flex;
   flex-direction: column;
@@ -54,10 +55,11 @@ const CompanyNameWide = styled.span`
 
 const ContactRow = styled.div`
   display: flex;
+  font-weight: 400;
   flex-direction: column;
   gap: 0.5rem 1.5rem;
-  font-size: 0.85rem;
-  color: rgba(var(--text), 0.5);
+  font-size: 1.25rem;
+  color: rgb(var(--text-grey));
 `;
 
 const ContactItem = styled.span`
@@ -76,7 +78,6 @@ const IconButton = styled.a`
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: rgba(255, 255, 255, 0.12);
   transition: background 160ms ease, transform 160ms ease;
 
   &:hover,
@@ -91,8 +92,8 @@ const IconButton = styled.a`
   }
 
   svg {
-    width: 22px;
-    height: 22px;
+    width: 30px;
+    height: 30px;
   }
 `;
 
@@ -130,13 +131,22 @@ const CondensedRight = styled.div`
   margin-left: auto;
 `;
 
-const PhoneText = styled.a`
+const PhoneText = styled.div`
   font-weight: 400;
-  letter-spacing: 0.02em;
   color: inherit;
-  font-size: 0.75rem;
   white-space: nowrap;
+  letter-spacing: 1.5x;
+
+  span:first-child {
+    font-size: 12px;
+  }
+
+  span:nth-child(2) {
+    font-size: 16px;
+  }
 `;
+
+
 
 const Burger = styled.button`
   width: 44px;
@@ -330,8 +340,10 @@ export default function MobileHeader({
   condensedCompanyName = 'ВКУ',
   onHeightChange,
   onCondensedChange,
+  forceCondensed = false,
 }) {
-  const condensed = useScrollTrigger(scrollThreshold);
+  const scrollCondensed = useScrollTrigger(scrollThreshold);
+  const condensed = forceCondensed || scrollCondensed;
   const headerRef = useRef(null);
 
   const notifyHeight = useCallback(() => {
@@ -387,10 +399,7 @@ export default function MobileHeader({
             <LogoSmall src={condensedLogoSrc} alt="логотип компании ВКУ" />
           </CondensedBrand>
           <CondensedRight>
-            <PhoneText href={phoneHref}>{phoneDisplay}</PhoneText>
-            <Burger aria-label="Открыть меню">
-              <BurgerInner />
-            </Burger>
+            <PhoneText><span>8(8172)</span><span>50-56-65</span></PhoneText>
           </CondensedRight>
         </CondensedBar>
       ) : (

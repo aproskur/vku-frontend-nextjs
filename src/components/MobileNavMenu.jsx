@@ -2,13 +2,19 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
+import MobileNavProductionItem from '@/components/MobileNavProductionItem';
+import MobileNavProductionPanel from '@/components/MobileNavProductionPanel';
+
+const MOBILE_LAYER_BG = 'var(--mobile-layer-bg)';
+const MOBILE_LAYER_BG_STRONG = 'var(--mobile-layer-bg-strong)';
+const MOBILE_LAYER_OVERLAY = 'var(--mobile-layer-overlay)';
+const MOBILE_LAYER_BORDER = 'var(--mobile-layer-border)';
 
 const MenuWrapper = styled.nav.withConfig({
   shouldForwardProp: (prop) => prop !== 'topOffset' && prop !== 'condensed',
 })`
   padding: 1.25rem 1rem 2rem;
-  background: rgba(21, 25, 31, ${({ condensed }) => (condensed ? 0.92 : 0.7)});
-  backdrop-filter: blur(${({ condensed }) => (condensed ? '6px' : '3px')});
+  background: rgba(21, 25, 31, 0.6);
   color: #f5f7fb;
   position: fixed;
   left: 0;
@@ -84,8 +90,8 @@ const ItemButton = styled.button`
 `;
 
 const Label = styled.span`
-  font-size: 1rem;
-  letter-spacing: 0.02em;
+  font-size: 1.25rem;
+  line-height: 36px;
 `;
 
 const Indicator = styled.span`
@@ -100,7 +106,7 @@ const Indicator = styled.span`
 const SubMenu = styled.ul`
   list-style: none;
   margin: 0.35rem 0 0;
-  padding: 0 0 0 1.75rem;
+  padding: 0 0 0 0.5rem;
   display: ${({ $open }) => ($open ? 'grid' : 'none')};
   gap: 0.5rem;
 `;
@@ -122,6 +128,12 @@ const SubMenuButton = styled.button`
     outline: 2px solid rgba(255, 255, 255, 0.35);
     outline-offset: 3px;
   }
+`;
+
+const ProductionRow = styled.div`
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
 `;
 
 function ArrowIcon() {
@@ -170,13 +182,35 @@ export default function MobileNavMenu({
   topOffset = 0,
   onHeightChange,
   condensed = false,
+  onProductionPanelToggle,
 }) {
   const menuRef = useRef(null);
   const [expandedItem, setExpandedItem] = useState(null);
   const [selectedLeafKey, setSelectedLeafKey] = useState(null);
+  const [activeProduction, setActiveProduction] = useState(null);
+  const [activeProductionKey, setActiveProductionKey] = useState(null);
+  const productionRefs = useRef(new Map());
+  const activePanelRef = useRef(null);
 
   const handleToggle = (itemKey) => {
-    setExpandedItem((current) => (current === itemKey ? null : itemKey));
+    const isSame = expandedItem === itemKey;
+
+    if (!isSame) {
+      setActiveProduction(null);
+      setActiveProductionKey(null);
+      if (typeof onProductionPanelToggle === 'function') {
+        onProductionPanelToggle(false);
+      }
+      setExpandedItem(itemKey);
+    } else {
+      setActiveProduction(null);
+      setActiveProductionKey(null);
+      if (typeof onProductionPanelToggle === 'function') {
+        onProductionPanelToggle(false);
+      }
+      setExpandedItem(null);
+    }
+
     setSelectedLeafKey(null);
   };
 
@@ -187,8 +221,34 @@ export default function MobileNavMenu({
 
     if (item) {
       const derivedKey = item.key ?? item.label;
-      if (derivedKey) {
-        setSelectedLeafKey(derivedKey);
+
+      if (item.variant === 'production') {
+        if (activeProductionKey === derivedKey) {
+          setActiveProduction(null);
+          setActiveProductionKey(null);
+          setSelectedLeafKey(null);
+          if (typeof onProductionPanelToggle === 'function') {
+            onProductionPanelToggle(false);
+          }
+        } else {
+          setActiveProduction(item);
+          setActiveProductionKey(derivedKey ?? null);
+          if (derivedKey) {
+            setSelectedLeafKey(derivedKey);
+          }
+          if (typeof onProductionPanelToggle === 'function') {
+            onProductionPanelToggle(true);
+          }
+        }
+      } else {
+        if (derivedKey) {
+          setSelectedLeafKey(derivedKey);
+        }
+        setActiveProduction(null);
+        setActiveProductionKey(null);
+        if (typeof onProductionPanelToggle === 'function') {
+          onProductionPanelToggle(false);
+        }
       }
     }
 
@@ -196,6 +256,31 @@ export default function MobileNavMenu({
       onItemSelect(event, item);
     }
   };
+
+  const handleCloseProduction = () => {
+    setActiveProduction(null);
+    setActiveProductionKey(null);
+    setSelectedLeafKey(null);
+    if (typeof onProductionPanelToggle === 'function') {
+      onProductionPanelToggle(false);
+    }
+  };
+
+  const registerProductionRef = useCallback(
+    (key) => (node) => {
+      if (!productionRefs.current) return;
+      if (!node) {
+        productionRefs.current.delete(key);
+      } else {
+        productionRefs.current.set(key, node);
+      }
+    },
+    [],
+  );
+
+  const setActivePanelNode = useCallback((node) => {
+    activePanelRef.current = node;
+  }, []);
 
   const reportHeight = useCallback(() => {
     if (!onHeightChange || !menuRef.current) return;
@@ -216,6 +301,30 @@ export default function MobileNavMenu({
 
     return () => observer.disconnect();
   }, [onHeightChange, reportHeight]);
+
+  useEffect(() => {
+    if (!activeProductionKey) {
+      return;
+    }
+
+    const menu = menuRef.current;
+    const panelNode = activePanelRef.current;
+    const fallbackTarget = productionRefs.current.get(activeProductionKey);
+    const target = panelNode?.querySelector('[data-production-panel-header]') ?? panelNode ?? fallbackTarget;
+
+    if (!menu || !target) {
+      return;
+    }
+
+    const menuRect = menu.getBoundingClientRect();
+    const targetRect = target.getBoundingClientRect();
+    const offset = targetRect.top - menuRect.top;
+
+    menu.scrollTo({
+      top: menu.scrollTop + offset - 16,
+      behavior: 'smooth',
+    });
+  }, [activeProductionKey, activeProduction]);
 
   if (!items || items.length === 0) {
     return null;
@@ -264,15 +373,44 @@ export default function MobileNavMenu({
                 <SubMenu id={`submenu-${itemKey}`} $open={isExpanded}>
                   {children.map((child) => {
                     const childKey = child.key ?? child.label;
+                    const isProduction = child.variant === 'production';
+                    const isActive = selectedLeafKey === childKey;
+                    const isPanelOpen = activeProductionKey === childKey && activeProduction;
+
                     return (
-                      <li key={childKey}>
-                        <SubMenuButton
-                          type="button"
-                          onClick={(event) => handleSelect(event, { ...child, parentKey: itemKey })}
-                        >
-                          <MenuIndicator expanded={selectedLeafKey === childKey} />
-                          <span>{child.label}</span>
-                        </SubMenuButton>
+                      <li key={childKey} ref={isProduction ? registerProductionRef(childKey) : undefined}>
+                        {isProduction ? (
+                          <>
+                            <ProductionRow>
+                              <MenuIndicator expanded={isActive} />
+                              <MobileNavProductionItem
+                                label={child.label}
+                                price={child.price}
+                                imageSrc={child.imageSrc}
+                                active={isActive}
+                                onClick={(event) =>
+                                  handleSelect(event, { ...child, parentKey: itemKey })
+                                }
+                              />
+                            </ProductionRow>
+                            {isPanelOpen ? (
+                              <ProductionPanelHolder ref={setActivePanelNode}>
+                                <MobileNavProductionPanel
+                                  product={activeProduction}
+                                  onClose={handleCloseProduction}
+                                />
+                              </ProductionPanelHolder>
+                            ) : null}
+                          </>
+                        ) : (
+                          <SubMenuButton
+                            type="button"
+                            onClick={(event) => handleSelect(event, { ...child, parentKey: itemKey })}
+                          >
+                            <MenuIndicator expanded={isActive} />
+                            <span>{child.label}</span>
+                          </SubMenuButton>
+                        )}
                       </li>
                     );
                   })}
@@ -285,3 +423,7 @@ export default function MobileNavMenu({
     </MenuWrapper>
   );
 }
+
+const ProductionPanelHolder = styled.div`
+  margin-top: 0.75rem;
+`;

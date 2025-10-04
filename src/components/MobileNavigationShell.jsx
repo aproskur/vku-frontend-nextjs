@@ -31,6 +31,7 @@ export default function MobileNavigationShell({ items }) {
   const [headerHeight, setHeaderHeight] = useState(80);
   const [menuHeight, setMenuHeight] = useState(0);
   const [isHeaderCondensed, setIsHeaderCondensed] = useState(false);
+  const [forceCondensed, setForceCondensed] = useState(false);
 
   const handleHeaderHeightChange = useCallback((height) => {
     setHeaderHeight((current) => {
@@ -48,18 +49,25 @@ export default function MobileNavigationShell({ items }) {
 
   const spacerHeight = headerHeight + menuHeight;
 
+  const handleProductionPanelToggle = useCallback((isOpen) => {
+    setForceCondensed(isOpen);
+    setIsHeaderCondensed(isOpen);
+  }, []);
+
   return (
     <>
       <Background aria-hidden="true" />
       <MobileHeader
         onHeightChange={handleHeaderHeightChange}
         onCondensedChange={setIsHeaderCondensed}
+        forceCondensed={forceCondensed}
       />
       <MobileNavMenu
         items={items}
         topOffset={headerHeight}
         onHeightChange={handleMenuHeightChange}
         condensed={isHeaderCondensed}
+        onProductionPanelToggle={handleProductionPanelToggle}
       />
       <Spacer height={spacerHeight} />
     </>
