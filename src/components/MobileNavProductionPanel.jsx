@@ -195,6 +195,7 @@ const HeroImage = styled.img`
   width: 100%;
   height: 450px;
   display: block;
+  border: 3px solid rgba(var(--text-grey), 0.5);
 `; 
 
 const Section = styled.section`

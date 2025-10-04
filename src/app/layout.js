@@ -10,6 +10,7 @@ export const mobileNavItems = [
     key: "products",
     label: "Продукция",
     children: [
+      // 1) Грунт — от 1000
       {
         key: "product-grunt",
         label: "Грунт",
@@ -29,6 +30,8 @@ export const mobileNavItems = [
         ctaLabel: "В заказ",
         ctaHref: "/order?product=product-grunt",
       },
+
+      // 2) Песок — от 210
       {
         key: "product-pesok",
         label: "Песок",
@@ -48,24 +51,8 @@ export const mobileNavItems = [
         ctaLabel: "В заказ",
         ctaHref: "/order?product=product-pesok",
       },
-      {
-        key: "product-mytyi-pesok",
-        label: "Мытый песок",
-        price: "по запросу",
-        imageSrc: "/images/products/mytyi-pesok.webp",
-        variant: "production",
-        heroImageSrc: "/images/products/mytyi-pesok.webp",
-        heroImageAlt: "Мытый песок",
-        description:
-          "Очищенный мытый песок для бетонов, стяжек и кладочных растворов.",
-        specifications: [
-          { label: "Модуль крупности", value: "1,5–2,0" },
-          { label: "Содержание примесей", value: "≤ 1%" },
-        ],
-        highlights: ["Повышенная чистота"],
-        ctaLabel: "Уточнить цену",
-        ctaHref: "/order?product=product-mytyi-pesok",
-      },
+
+      // 3) Гравий — от 600
       {
         key: "product-graviy",
         label: "Гравий",
@@ -85,6 +72,27 @@ export const mobileNavItems = [
         ctaLabel: "В заказ",
         ctaHref: "/order?product=product-graviy",
       },
+
+      // 4) Бутовый камень — от 210
+      {
+        key: "product-buty",
+        label: "Бутовый камень",
+        price: "от 210 р./м³",
+        imageSrc: "/images/products/butoviy-kamen.webp",
+        variant: "production",
+        heroImageSrc: "/images/products/butoviy-kamen.webp",
+        heroImageAlt: "Бутовый камень",
+        description: "Бутовый камень для подпорных стен и декоративных работ.",
+        specifications: [
+          { label: "Размер камня", value: "150–400 мм" },
+          { label: "Прочность", value: "М1000" },
+        ],
+        highlights: ["Поставляется навалом или в биг-бэгах"],
+        ctaLabel: "Запросить цену",
+        ctaHref: "/order?product=product-buty",
+      },
+
+      // 5) Щебень — от 800
       {
         key: "product-scheben",
         label: "Щебень",
@@ -104,78 +112,8 @@ export const mobileNavItems = [
         ctaLabel: "В заказ",
         ctaHref: "/order?product=product-scheben",
       },
-      {
-        key: "product-otsev",
-        label: "Отсев",
-        price: "по запросу",
-        imageSrc: "/images/products/otsev.webp",
-        variant: "production",
-        heroImageSrc: "/images/products/otsev.webp",
-        heroImageAlt: "Отсев",
-        description:
-          "Минеральный отсев для подсыпки, выравнивания и приготовления сухих смесей.",
-        specifications: [
-          { label: "Фракция", value: "0–5 мм" },
-          { label: "Содержание пыли", value: "до 10%" },
-        ],
-        highlights: ["Стабильная фракция"],
-        ctaLabel: "Уточнить цену",
-        ctaHref: "/order?product=product-otsev",
-      },
-      {
-        key: "product-otsev-drobleniya",
-        label: "Отсев дробления",
-        price: "по запросу",
-        imageSrc: "/images/products/otsev-drobleniya.webp",
-        variant: "production",
-        heroImageSrc: "/images/products/otsev-drobleniya.webp",
-        heroImageAlt: "Отсев дробления",
-        description:
-          "Технологический продукт дробления для подушек и подготовки оснований.",
-        specifications: [
-          { label: "Фракция", value: "0–10 мм" },
-          { label: "Тип породы", value: "гранит/известняк" },
-        ],
-        highlights: ["Высокая сыпучесть"],
-        ctaLabel: "Уточнить цену",
-        ctaHref: "/order?product=product-otsev-drobleniya",
-      },
-      {
-        key: "product-shps",
-        label: "ЩПС (щебеночно-песчаная смесь)",
-        price: "по запросу",
-        imageSrc: "/images/products/schebenochno-peschanaya-smes.webp",
-        variant: "production",
-        heroImageSrc: "/images/products/schebenochno-peschanaya-smes.webp",
-        heroImageAlt: "Щебеночно-песчаная смесь",
-        description:
-          "Смесь для устройства оснований и выравнивающих слоёв дорожных покрытий.",
-        specifications: [
-          { label: "Состав", value: "щебень + песок" },
-          { label: "Фракция щебня", value: "5–20 мм" },
-        ],
-        highlights: ["Оптимальное зерновое распределение"],
-        ctaLabel: "В заказ",
-        ctaHref: "/order?product=product-shps",
-      },
-      {
-        key: "product-pgs",
-        label: "ПГС (песчано-гравийная смесь)",
-        price: "по запросу",
-        imageSrc: "/images/products/pgs.webp",
-        variant: "production",
-        heroImageSrc: "/images/products/pgs.webp",
-        heroImageAlt: "Песчано-гравийная смесь",
-        description:
-          "Натуральная смесь для подсыпки, подушек и малоответственных бетонов.",
-        specifications: [
-          { label: "Гравий", value: "до 30%" },
-          { label: "Фракция гравия", value: "5–20 мм" },
-        ],
-        highlights: ["Доступно круглый год"],
-        ctaLabel: "В заказ",
-        ctaHref: "/order?product=product-pgs",
-      },
+
+      // 6) Природный камень — от 500
       {
         key: "product-prirodny-kamen",
         label: "Природный камень",
@@ -194,10 +132,92 @@ export const mobileNavItems = [
         ctaLabel: "Уточнить наличие",
         ctaHref: "/order?product=product-prirodny-kamen",
       },
+
+      // 7) ЩПС — от 210
+      {
+        key: "product-shps",
+        label: "ЩПС",
+        price: "от 210 р./м³",
+        imageSrc: "/images/products/schebenochno-peschanaya-smes.webp",
+        variant: "production",
+        heroImageSrc: "/images/products/schebenochno-peschanaya-smes.webp",
+        heroImageAlt: "Щебеночно-песчаная смесь",
+        description:
+          "Смесь для устройства оснований и выравнивающих слоёв дорожных покрытий.",
+        specifications: [
+          { label: "Состав", value: "щебень + песок" },
+          { label: "Фракция щебня", value: "5–20 мм" },
+        ],
+        highlights: ["Оптимальное зерновое распределение"],
+        ctaLabel: "В заказ",
+        ctaHref: "/order?product=product-shps",
+      },
+
+      // 8) ПГС — от 210
+      {
+        key: "product-pgs",
+        label: "ПГС",
+        price: "от 210 р./м³",
+        imageSrc: "/images/products/pgs.webp",
+        variant: "production",
+        heroImageSrc: "/images/products/pgs.webp",
+        heroImageAlt: "Песчано-гравийная смесь",
+        description:
+          "Натуральная смесь для подсыпки, подушек и малоответственных бетонов.",
+        specifications: [
+          { label: "Гравий", value: "до 30%" },
+          { label: "Фракция гравия", value: "5–20 мм" },
+        ],
+        highlights: ["Доступно круглый год"],
+        ctaLabel: "В заказ",
+        ctaHref: "/order?product=product-pgs",
+      },
+
+      // 9) Отсев — от 210
+      {
+        key: "product-otsev",
+        label: "Отсев",
+        price: "от 210 р./м³",
+        imageSrc: "/images/products/otsev.webp",
+        variant: "production",
+        heroImageSrc: "/images/products/otsev.webp",
+        heroImageAlt: "Отсев",
+        description:
+          "Минеральный отсев для подсыпки, выравнивания и приготовления сухих смесей.",
+        specifications: [
+          { label: "Фракция", value: "0–5 мм" },
+          { label: "Содержание пыли", value: "до 10%" },
+        ],
+        highlights: ["Стабильная фракция"],
+        ctaLabel: "Уточнить цену",
+        ctaHref: "/order?product=product-otsev",
+      },
+
+      // 10) Песок мытый — от 230
+      {
+        key: "product-mytyi-pesok",
+        label: "Песок мытый",
+        price: "от 230 р./м³",
+        imageSrc: "/images/products/mytyi-pesok.webp",
+        variant: "production",
+        heroImageSrc: "/images/products/mytyi-pesok.webp",
+        heroImageAlt: "Мытый песок",
+        description:
+          "Очищенный мытый песок для бетонов, стяжек и кладочных растворов.",
+        specifications: [
+          { label: "Модуль крупности", value: "1,5–2,0" },
+          { label: "Содержание примесей", value: "≤ 1%" },
+        ],
+        highlights: ["Повышенная чистота"],
+        ctaLabel: "Уточнить цену",
+        ctaHref: "/order?product=product-mytyi-pesok",
+      },
+
+      // 11) Бетон — от 3000
       {
         key: "product-beton",
         label: "Бетон",
-        price: "по запросу",
+        price: "от 3000 р./м³",
         imageSrc: "/images/products/beton.webp",
         variant: "production",
         heroImageSrc: "/images/products/beton.webp",
@@ -215,6 +235,7 @@ export const mobileNavItems = [
     ],
   },
 ];
+
 
 
 const geistSans = Geist({
