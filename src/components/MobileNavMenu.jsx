@@ -98,9 +98,10 @@ const Indicator = styled.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 16px;
+  width: 25px;
+  height: 25px;
   flex: 0 0 16px;
+  color:rgb(var(--text-grey));
 `;
 
 const SubMenu = styled.ul`
@@ -134,6 +135,25 @@ const ProductionRow = styled.div`
   display: flex;
   align-items: stretch;
   gap: 8px;
+`;
+
+const IconButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  min-width: 28px;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.35);
+    outline-offset: 2px;
+  }
 `;
 
 function ArrowIcon() {
@@ -382,7 +402,15 @@ export default function MobileNavMenu({
                         {isProduction ? (
                           <>
                             <ProductionRow>
-                              <MenuIndicator expanded={isActive} />
+                              <IconButton
+                                type="button"
+                                aria-label={isActive ? 'Скрыть товар' : 'Показать товар'}
+                                onClick={(event) =>
+                                  handleSelect(event, { ...child, parentKey: itemKey })
+                                }
+                              >
+                                <MenuIndicator expanded={isActive} />
+                              </IconButton>
                               <MobileNavProductionItem
                                 label={child.label}
                                 price={child.price}

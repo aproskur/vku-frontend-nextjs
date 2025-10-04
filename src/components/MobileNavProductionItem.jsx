@@ -7,7 +7,7 @@ const ProductionButton = styled.button.withConfig({
 })`
   position: relative;
   width: 100%;
-  min-height: 52px;
+  min-height: 44px;
   border: none;
   padding: 0;
   margin: 0;
@@ -16,7 +16,7 @@ const ProductionButton = styled.button.withConfig({
   color: inherit;
   text-align: left;
   overflow: hidden;
-  border-radius: 7px;
+  border-radius: 4px;
 
   &:focus-visible {
     outline: 2px solid rgba(255, 255, 255, 0.45);
@@ -49,14 +49,15 @@ const Content = styled.span`
 
 const ProductName = styled.span`
   position: absolute;
+  min-height: 22px;
   top: 0px;
   left: 0px;
-  padding: 4px 12px;
   background: rgba(21, 25, 31, 0.7);
   font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   color: rgb(var(--text));
+  padding: 0.25rem 0.6rem;
 `;
 
 const ProductPrice = styled.span`
