@@ -62,13 +62,16 @@ const ProductName = styled.span`
 
 const ProductPrice = styled.span`
   position: absolute;
+  min-height: 20px;
   bottom: 0px;
   right: 0px;
-  padding: 4px 12px;
+  border-top-left-radius: 4px;
+  padding: 4px 4px;
   background: rgba(245, 247, 251, 0.5);
   color: #11161f;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 500;
+  line-height: 16px;
 `;
 
 export default function MobileNavProductionItem({ label, price, imageSrc, active = false, onClick }) {
