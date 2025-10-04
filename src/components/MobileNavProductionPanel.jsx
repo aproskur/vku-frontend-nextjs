@@ -228,43 +228,43 @@ const SectionTitle = styled.button`
 
 const SectionIndicator = styled.span`
   position: relative;
-  width: 14px;
-  height: 2px;
-  background: rgb(var(--clr-sunny));
-  border-radius: 1px;
-  transition: transform 180ms ease;
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -6px 0;
-    width: 14px;
-    height: 14px;
-    display: block;
-  }
-
+  &::before,
   &::after {
     content: '';
     position: absolute;
-    top: -5px;
-    left: 6px;
-    width: 7px;
-    height: 7px;
-    border-right: 2px solid rgb(var(--clr-sunny));
-    border-bottom: 2px solid rgb(var(--clr-sunny));
-    transform: ${({ $expanded }) => ($expanded ? 'rotate(-45deg)' : 'rotate(45deg)')};
-    transform-origin: center;
-    transition: transform 180ms ease;
+    transition: transform 180ms ease, opacity 180ms ease;
   }
 
-  ${({ $expanded }) =>
-    $expanded
-      ? `
-    transform: scaleX(1);
-  `
-      : `
-    transform: scaleX(0.8);
-  `};
+  &::before {
+    width: 12px;
+    height: 2px;
+    border-radius: 999px;
+    background: rgb(var(--text-grey));
+    transform-origin: center;
+    transform: ${({ $expanded }) => ($expanded ? 'scaleX(1)' : 'scaleX(0.2)')};
+    opacity: ${({ $expanded }) => ($expanded ? 1 : 0)};
+  }
+
+  &::after {
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid rgb(var(--text-grey));
+    border-bottom: 2px solid rgb(var(--text-grey));
+    top: 50%;
+    left: 50%;
+    transform-origin: center;
+    transform: ${({ $expanded }) =>
+      $expanded
+        ? 'translate(-50%, -50%) rotate(-45deg) scale(0.6)'
+        : 'translate(-50%, -50%) rotate(45deg) scale(1)'};
+    opacity: ${({ $expanded }) => ($expanded ? 0 : 1)};
+  }
 `;
 
 const Collapsible = styled.div`
