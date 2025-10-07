@@ -4,6 +4,8 @@ import { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import MobileHeader from '@/components/MobileHeader';
 import MobileNavMenu from '@/components/MobileNavMenu';
+import MobileNavFooter from '@/components/MobileNavFooter';
+import MobileOrderCartIndicator from '@/components/MobileOrderCartIndicator';
 
 const Background = styled.div`
   position: fixed;
@@ -32,6 +34,8 @@ export default function MobileNavigationShell({ items }) {
   const [menuHeight, setMenuHeight] = useState(0);
   const [isHeaderCondensed, setIsHeaderCondensed] = useState(false);
   const [forceCondensed, setForceCondensed] = useState(false);
+  const [footerHeight, setFooterHeight] = useState(0);
+  const [isProductionPanelOpen, setIsProductionPanelOpen] = useState(false);
 
   const handleHeaderHeightChange = useCallback((height) => {
     setHeaderHeight((current) => {
@@ -47,11 +51,12 @@ export default function MobileNavigationShell({ items }) {
     });
   }, []);
 
-  const spacerHeight = headerHeight + menuHeight;
+  const spacerHeight = headerHeight + menuHeight + (isProductionPanelOpen ? footerHeight : 0);
 
   const handleProductionPanelToggle = useCallback((isOpen) => {
     setForceCondensed(isOpen);
     setIsHeaderCondensed(isOpen);
+    setIsProductionPanelOpen(isOpen);
   }, []);
 
   return (
@@ -68,7 +73,13 @@ export default function MobileNavigationShell({ items }) {
         onHeightChange={handleMenuHeightChange}
         condensed={isHeaderCondensed}
         onProductionPanelToggle={handleProductionPanelToggle}
+        footerOffset={isProductionPanelOpen ? footerHeight : 0}
       />
+      <MobileNavFooter
+        visible={isProductionPanelOpen}
+        onHeightChange={setFooterHeight}
+      />
+      <MobileOrderCartIndicator bottomOffset={isProductionPanelOpen ? footerHeight : 0} />
       <Spacer height={spacerHeight} />
     </>
   );

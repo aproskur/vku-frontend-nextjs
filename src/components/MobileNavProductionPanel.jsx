@@ -1,12 +1,15 @@
 'use client';
 
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
+import { useOrder } from '@/context/OrderContext';
 
 export default function MobileNavProductionPanel({ product, onClose }) {
   if (!product) {
     return null;
   }
+
+  const { addItem, getItemQuantity } = useOrder();
 
   const {
     label,
@@ -25,6 +28,18 @@ export default function MobileNavProductionPanel({ product, onClose }) {
     highlights: false,
     description: false,
   }));
+
+  const currentQuantity = useMemo(() => getItemQuantity(product), [getItemQuantity, product]);
+
+  const handleCtaClick = useCallback(
+    (event) => {
+      if (event && typeof event.preventDefault === 'function') {
+        event.preventDefault();
+      }
+      addItem(product, 1);
+    },
+    [addItem, product],
+  );
 
   const toggleSection = (key) => {
     setSectionStates((prev) => ({
@@ -112,10 +127,13 @@ export default function MobileNavProductionPanel({ product, onClose }) {
 
         {ctaLabel ? (
           <CtaBar>
-            <CtaButton as={ctaHref ? 'a' : 'button'} href={ctaHref ?? undefined}>
+            <CtaButton type="button" onClick={handleCtaClick}>
               {ctaLabel}
             </CtaButton>
             {price ? <CtaPrice>{price}</CtaPrice> : null}
+         {/*  {currentQuantity > 0 ? (
+              <QuantityBadge role="status">В заказе: {currentQuantity}</QuantityBadge>
+            ) : null} */}
           </CtaBar>
         ) : null}
       </PanelBody>
@@ -337,4 +355,12 @@ const CtaPrice = styled.span`
   font-weight: 700;
   font-size: 1.25rem;
   color: #fff;
+`;
+
+const QuantityBadge = styled.span`
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(245, 247, 251, 0.85);
 `;

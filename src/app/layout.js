@@ -2,6 +2,7 @@ import { Geist, Geist_Mono, Ubuntu } from "next/font/google";
 import "./globals.css";
 import StyledComponentsRegistry from "../lib/registry";
 import MobileNavigationShell from "@/components/MobileNavigationShell";
+import { OrderProvider } from "@/context/OrderContext";
 
 export const mobileNavItems = [
   { key: "about", label: "О компании", href: "/about" },
@@ -88,7 +89,7 @@ export const mobileNavItems = [
           { label: "Прочность", value: "М1000" },
         ],
         highlights: ["Поставляется навалом или в биг-бэгах"],
-        ctaLabel: "Запросить цену",
+        ctaLabel: "В заказ",
         ctaHref: "/order?product=product-buty",
       },
 
@@ -129,7 +130,7 @@ export const mobileNavItems = [
           { label: "Средняя толщина", value: "30–70 мм" },
         ],
         highlights: ["Разнообразие оттенков на складе"],
-        ctaLabel: "Уточнить наличие",
+        ctaLabel: "В заказ",
         ctaHref: "/order?product=product-prirodny-kamen",
       },
 
@@ -189,7 +190,7 @@ export const mobileNavItems = [
           { label: "Содержание пыли", value: "до 10%" },
         ],
         highlights: ["Стабильная фракция"],
-        ctaLabel: "Уточнить цену",
+        ctaLabel: "В заказ",
         ctaHref: "/order?product=product-otsev",
       },
 
@@ -209,7 +210,7 @@ export const mobileNavItems = [
           { label: "Содержание примесей", value: "≤ 1%" },
         ],
         highlights: ["Повышенная чистота"],
-        ctaLabel: "Уточнить цену",
+        ctaLabel: "В заказ",
         ctaHref: "/order?product=product-mytyi-pesok",
       },
 
@@ -229,7 +230,7 @@ export const mobileNavItems = [
           { label: "Подвижность", value: "П2–П4" },
         ],
         highlights: ["Паспорта и протоколы испытаний"],
-        ctaLabel: "Запросить цену",
+        ctaLabel: "В заказ",
         ctaHref: "/order?product=product-beton",
       },
     ],
@@ -265,8 +266,10 @@ export default function RootLayout({ children }) {
     <html lang="ru">
       <body className={`${geistSans.variable} ${geistMono.variable} ${ubuntu.variable}`}>
         <StyledComponentsRegistry>
-          <MobileNavigationShell items={mobileNavItems} />
-          <main className="app-main-hidden-on-mobile">{children}</main>
+          <OrderProvider>
+            <MobileNavigationShell items={mobileNavItems} />
+            <main className="app-main-hidden-on-mobile">{children}</main>
+          </OrderProvider>
         </StyledComponentsRegistry>
       </body>
     </html>

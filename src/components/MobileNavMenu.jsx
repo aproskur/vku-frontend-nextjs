@@ -11,9 +11,12 @@ const MOBILE_LAYER_OVERLAY = 'var(--mobile-layer-overlay)';
 const MOBILE_LAYER_BORDER = 'var(--mobile-layer-border)';
 
 const MenuWrapper = styled.nav.withConfig({
-  shouldForwardProp: (prop) => prop !== 'topOffset' && prop !== 'condensed',
+  shouldForwardProp: (prop) => !['topOffset', 'condensed', 'footerOffset'].includes(prop),
 })`
-  padding: 1.25rem 1rem 2rem;
+  ${({ footerOffset = 0 }) => {
+    const safeOffset = Number.isFinite(footerOffset) ? Math.max(0, footerOffset) : 0;
+    return `padding: 1.25rem 1rem calc(2rem + ${safeOffset}px);`;
+  }}
   background: rgba(21, 25, 31, 0.6);
   color: #f5f7fb;
   position: fixed;
@@ -203,6 +206,7 @@ export default function MobileNavMenu({
   onHeightChange,
   condensed = false,
   onProductionPanelToggle,
+  footerOffset = 0,
 }) {
   const menuRef = useRef(null);
   const [expandedItem, setExpandedItem] = useState(null);
@@ -356,6 +360,7 @@ export default function MobileNavMenu({
       aria-label="Мобильное меню"
       topOffset={topOffset}
       condensed={condensed}
+      footerOffset={footerOffset}
     >
       <MenuList>
         {items.map(({ key, label, href, children = [] }) => {
