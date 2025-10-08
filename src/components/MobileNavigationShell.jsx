@@ -52,11 +52,14 @@ export default function MobileNavigationShell({ items }) {
     });
   }, []);
 
-  const spacerHeight = headerHeight + menuHeight + (isProductionPanelOpen ? footerHeight : 0);
+  const isFooterVisible = isHeaderCondensed || isProductionPanelOpen;
+  const spacerHeight = headerHeight + menuHeight + (isFooterVisible ? footerHeight : 0);
 
   const handleProductionPanelToggle = useCallback((isOpen) => {
     setForceCondensed(isOpen);
-    setIsHeaderCondensed(isOpen);
+    if (isOpen) {
+      setIsHeaderCondensed(true);
+    }
     setIsProductionPanelOpen(isOpen);
   }, []);
 
@@ -75,14 +78,14 @@ export default function MobileNavigationShell({ items }) {
         onHeightChange={handleMenuHeightChange}
         condensed={isHeaderCondensed}
         onProductionPanelToggle={handleProductionPanelToggle}
-        footerOffset={isProductionPanelOpen ? footerHeight : 0}
+        footerOffset={isFooterVisible ? footerHeight : 0}
         onScrollContainerChange={setMenuScrollElement}
       />
       <MobileNavFooter
-        visible={isProductionPanelOpen}
+        visible={isFooterVisible}
         onHeightChange={setFooterHeight}
       />
-      <MobileOrderCartIndicator bottomOffset={isProductionPanelOpen ? footerHeight : 0} />
+      <MobileOrderCartIndicator bottomOffset={isFooterVisible ? footerHeight : 0} />
       <Spacer height={spacerHeight} />
     </>
   );
