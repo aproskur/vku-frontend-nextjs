@@ -207,6 +207,7 @@ export default function MobileNavMenu({
   condensed = false,
   onProductionPanelToggle,
   footerOffset = 0,
+  onScrollContainerChange,
 }) {
   const menuRef = useRef(null);
   const [expandedItem, setExpandedItem] = useState(null);
@@ -314,6 +315,19 @@ export default function MobileNavMenu({
   useEffect(() => {
     reportHeight();
   }, [reportHeight, expandedItem, items, topOffset]);
+
+  useEffect(() => {
+    if (!onScrollContainerChange) {
+      return;
+    }
+
+    const node = menuRef.current;
+    onScrollContainerChange(node);
+
+    return () => {
+      onScrollContainerChange(null);
+    };
+  }, [onScrollContainerChange]);
 
   useEffect(() => {
     if (!onHeightChange || typeof ResizeObserver === 'undefined') return;

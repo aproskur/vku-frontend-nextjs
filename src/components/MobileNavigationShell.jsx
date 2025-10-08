@@ -36,6 +36,7 @@ export default function MobileNavigationShell({ items }) {
   const [forceCondensed, setForceCondensed] = useState(false);
   const [footerHeight, setFooterHeight] = useState(0);
   const [isProductionPanelOpen, setIsProductionPanelOpen] = useState(false);
+  const [menuScrollElement, setMenuScrollElement] = useState(null);
 
   const handleHeaderHeightChange = useCallback((height) => {
     setHeaderHeight((current) => {
@@ -66,6 +67,7 @@ export default function MobileNavigationShell({ items }) {
         onHeightChange={handleHeaderHeightChange}
         onCondensedChange={setIsHeaderCondensed}
         forceCondensed={forceCondensed}
+        scrollElement={menuScrollElement}
       />
       <MobileNavMenu
         items={items}
@@ -74,6 +76,7 @@ export default function MobileNavigationShell({ items }) {
         condensed={isHeaderCondensed}
         onProductionPanelToggle={handleProductionPanelToggle}
         footerOffset={isProductionPanelOpen ? footerHeight : 0}
+        onScrollContainerChange={setMenuScrollElement}
       />
       <MobileNavFooter
         visible={isProductionPanelOpen}

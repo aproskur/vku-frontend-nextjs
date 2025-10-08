@@ -199,24 +199,44 @@ const Burger = styled.button`
 
 const BurgerInner = () => <span aria-hidden="true" />;
 
-function useScrollTrigger(threshold = 40) {
+function getScrollTop(target) {
+  if (!target) {
+    return 0;
+  }
+
+  if (target === window) {
+    return window.scrollY || document.documentElement.scrollTop || 0;
+  }
+
+  return target.scrollTop ?? 0;
+}
+
+function useScrollTrigger(threshold = 40, scrollElement) {
   const [isPastThreshold, setIsPastThreshold] = useState(false);
 
   useEffect(() => {
-    const update = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      setIsPastThreshold(scrollTop > threshold);
+    if (typeof window === 'undefined') {
+      return undefined;
+    }
+
+    const target = scrollElement ?? window;
+
+    if (!target) {
+      return undefined;
+    }
+
+    const handleScroll = () => {
+      setIsPastThreshold(getScrollTop(target) > threshold);
     };
 
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    document.addEventListener('scroll', update, { passive: true });
+    handleScroll();
+
+    target.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
-      window.removeEventListener('scroll', update);
-      document.removeEventListener('scroll', update);
+      target.removeEventListener('scroll', handleScroll);
     };
-  }, [threshold]);
+  }, [scrollElement, threshold]);
 
   return isPastThreshold;
 }
@@ -238,8 +258,9 @@ export default function MobileHeader({
   onHeightChange,
   onCondensedChange,
   forceCondensed = false,
+  scrollElement,
 }) {
-  const scrollCondensed = useScrollTrigger(scrollThreshold);
+  const scrollCondensed = useScrollTrigger(scrollThreshold, scrollElement);
   const condensed = forceCondensed || scrollCondensed;
   const headerRef = useRef(null);
 
