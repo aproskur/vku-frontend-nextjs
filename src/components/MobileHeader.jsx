@@ -68,6 +68,7 @@ const ContactRow = styled.div`
   gap: 0.5rem 1.5rem;
   font-size: 1.25rem;
   color: rgb(var(--text-grey));
+  margin-top: 1rem;
 `;
 
 const ContactItem = styled.span`
