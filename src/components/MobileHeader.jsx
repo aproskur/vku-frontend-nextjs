@@ -47,7 +47,7 @@ const BrandRow = styled.div`
 `;
 
 const LogoLarge = styled.img`
-  width: 76.03px;
+  width: 328px;
   height: auto;
 `;
 
@@ -243,7 +243,8 @@ function useScrollTrigger(threshold = 40, scrollElement) {
 }
 
 export default function MobileHeader({
-  logoSymbolSrc = '/images/logo.png',
+  logoSymbolLargeSrc = '/images/logo.png',
+  logoSymbolSmallSrc = '/images/logo-logo.png',
   condensedLogoSrc = '/images/logo-mob.png',
   companyName = 'Вологодское карьерное управление',
   address = 'г. Вологда, Рыбная, 30',
@@ -309,7 +310,7 @@ export default function MobileHeader({
     { key: 'contact', href: '#contact', label: 'Написать сообщение', icon: <ChatIcon /> },
   ];
 
-  const companyNameStacked = companyName.replace(/\s+/g, '\n');
+  //const companyNameStacked = companyName.replace(/\s+/g, '\n');
 
   return (
     <Header ref={headerRef} condensed={condensed}>
@@ -325,8 +326,8 @@ export default function MobileHeader({
       ) : (
         <WideContent>
           <BrandRow>
-            <LogoLarge src={logoSymbolSrc} alt="логотип компании ВКУ" />
-            <CompanyNameWide>{companyNameStacked}</CompanyNameWide>
+            <LogoLarge src={logoSymbolLargeSrc} alt="логотип компании ВКУ" />
+         {/* <CompanyNameWide>{companyNameStacked}</CompanyNameWide>*/ }
           </BrandRow>
           <ContactRow>
             <ContactItem>{address}</ContactItem>
