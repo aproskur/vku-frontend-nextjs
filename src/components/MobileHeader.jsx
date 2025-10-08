@@ -8,6 +8,7 @@ import {
   TelegramIcon,
   WhatsappIcon,
   MapIcon,
+  ChatIcon,
 } from '@/components/ContactIcons';
 
 const MOBILE_LAYER_BG = 'var(--mobile-layer-bg)';
@@ -305,6 +306,7 @@ export default function MobileHeader({
     { key: 'telegram', href: telegramHref, label: 'Открыть Telegram', icon: <TelegramIcon /> },
     { key: 'whatsapp', href: whatsappHref, label: 'Написать в WhatsApp', icon: <WhatsappIcon /> },
     { key: 'map', href: mapHref, label: 'Показать на карте', icon: <MapIcon /> },
+    { key: 'contact', href: '#contact', label: 'Написать сообщение', icon: <ChatIcon /> },
   ];
 
   const companyNameStacked = companyName.replace(/\s+/g, '\n');

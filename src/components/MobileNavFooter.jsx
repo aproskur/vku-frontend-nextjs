@@ -8,6 +8,7 @@ import {
   TelegramIcon,
   WhatsappIcon,
   MapIcon,
+  ChatIcon,
 } from '@/components/ContactIcons';
 
 const FooterWrapper = styled.footer`
@@ -119,6 +120,7 @@ export default function MobileNavFooter({
     { key: 'telegram', href: telegramHref, label: 'Открыть Telegram', icon: <TelegramIcon /> },
     { key: 'whatsapp', href: whatsappHref, label: 'Написать в WhatsApp', icon: <WhatsappIcon /> },
     { key: 'map', href: mapHref, label: 'Показать на карте', icon: <MapIcon /> },
+    { key: 'chat', href: '#contact', label: 'Написать сообщение', icon: <ChatIcon /> },
   ];
 
   return (
