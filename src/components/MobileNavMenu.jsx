@@ -27,6 +27,7 @@ const MenuWrapper = styled.nav.withConfig({
     const safeOffset = Number.isFinite(topOffset) ? Math.max(0, topOffset) : 0;
     return `
       top: ${safeOffset}px;
+      min-height: calc(100vh - ${safeOffset}px);
       max-height: calc(100vh - ${safeOffset}px);
     `;
   }}

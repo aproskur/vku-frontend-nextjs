@@ -30,8 +30,10 @@ body {
 
 @media (max-width: 991px) {
   body {
-    background: url('/images/mobile-background.webp') no-repeat center center / cover,
+    background:
+      url('/images/mobile-background.webp') center / cover no-repeat,
       rgb(var(--clr-dark-blue));
+    min-height: 100vh;
   }
 
   .app-main-hidden-on-mobile {
