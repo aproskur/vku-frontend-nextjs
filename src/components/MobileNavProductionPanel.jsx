@@ -208,14 +208,17 @@ const HeroImageWrapper = styled.div`
   overflow: hidden;
   display: flex;
   justify-content: center;
+  max-height: 450px;
 `;
 
 const HeroImage = styled.img`
-  max-width: 328px;
-  max-height: 450px;
   display: block;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  box-sizing: border-box;
   border: 3px solid rgba(var(--text-grey), 0.5);
-`; 
+`;
 
 const Section = styled.section`
   display: grid;
