@@ -5,13 +5,9 @@ import styled from 'styled-components';
 import MobileNavProductionItem from '@/components/MobileNavProductionItem';
 import MobileNavProductionPanel from '@/components/MobileNavProductionPanel';
 
-const MOBILE_LAYER_BG = 'var(--mobile-layer-bg)';
-const MOBILE_LAYER_BG_STRONG = 'var(--mobile-layer-bg-strong)';
-const MOBILE_LAYER_OVERLAY = 'var(--mobile-layer-overlay)';
-const MOBILE_LAYER_BORDER = 'var(--mobile-layer-border)';
 
 const MenuWrapper = styled.nav.withConfig({
-  shouldForwardProp: (prop) => !['topOffset', 'condensed', 'footerOffset'].includes(prop),
+  shouldForwardProp: (prop) => prop !== 'footerOffset',
 })`
   ${({ footerOffset = 0 }) => {
     const safeOffset = Number.isFinite(footerOffset) ? Math.max(0, footerOffset) : 0;
@@ -19,20 +15,9 @@ const MenuWrapper = styled.nav.withConfig({
   }}
   background: rgba(21, 25, 31, 0.6);
   color: #f5f7fb;
-  position: fixed;
-  left: 0;
-  right: 0;
   width: 100%;
-  ${({ topOffset = 0 }) => {
-    const safeOffset = Number.isFinite(topOffset) ? Math.max(0, topOffset) : 0;
-    return `
-      top: ${safeOffset}px;
-      min-height: calc(100vh - ${safeOffset}px);
-      max-height: calc(100vh - ${safeOffset}px);
-    `;
-  }}
-  overflow-y: auto;
-  z-index: 9;
+  position: relative;
+  z-index: 1;
 
   @media (min-width: 992px) {
     display: none;
@@ -45,6 +30,10 @@ const MenuList = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
+`;
+
+const MenuItem = styled.li`
+  scroll-margin-top: 120px;
 `;
 
 const ItemRow = styled.div`
@@ -114,6 +103,10 @@ const SubMenu = styled.ul`
   padding: 0 0 0 0.5rem;
   display: ${({ $open }) => ($open ? 'grid' : 'none')};
   gap: 0.5rem;
+`;
+
+const SubMenuItem = styled.li`
+  scroll-margin-top: 120px;
 `;
 
 const SubMenuButton = styled.button`
@@ -203,15 +196,10 @@ function MenuIndicator({ expanded }) {
 export default function MobileNavMenu({
   items,
   onItemSelect,
-  topOffset = 0,
-  onHeightChange,
-  condensed = false,
   onProductionPanelToggle,
   footerOffset = 0,
-  onScrollContainerChange,
   defaultExpandedKey,
 }) {
-  const menuRef = useRef(null);
   const [expandedItem, setExpandedItem] = useState(() => defaultExpandedKey ?? null);
   const [selectedLeafKey, setSelectedLeafKey] = useState(null);
   const [activeProduction, setActiveProduction] = useState(null);
@@ -309,61 +297,25 @@ export default function MobileNavMenu({
     activePanelRef.current = node;
   }, []);
 
-  const reportHeight = useCallback(() => {
-    if (!onHeightChange || !menuRef.current) return;
-    onHeightChange(menuRef.current.getBoundingClientRect().height);
-  }, [onHeightChange]);
-
-  useEffect(() => {
-    reportHeight();
-  }, [reportHeight, expandedItem, items, topOffset]);
-
-  useEffect(() => {
-    if (!onScrollContainerChange) {
-      return;
-    }
-
-    const node = menuRef.current;
-    onScrollContainerChange(node);
-
-    return () => {
-      onScrollContainerChange(null);
-    };
-  }, [onScrollContainerChange]);
-
-  useEffect(() => {
-    if (!onHeightChange || typeof ResizeObserver === 'undefined') return;
-    const element = menuRef.current;
-    if (!element) return;
-
-    const observer = new ResizeObserver(() => reportHeight());
-    observer.observe(element);
-
-    return () => observer.disconnect();
-  }, [onHeightChange, reportHeight]);
-
   useEffect(() => {
     if (!activeProductionKey) {
       return;
     }
 
-    const menu = menuRef.current;
     const panelNode = activePanelRef.current;
     const fallbackTarget = productionRefs.current.get(activeProductionKey);
     const target = panelNode?.querySelector('[data-production-panel-header]') ?? panelNode ?? fallbackTarget;
 
-    if (!menu || !target) {
+    if (!target || typeof window === 'undefined') {
       return;
     }
 
-    const menuRect = menu.getBoundingClientRect();
-    const targetRect = target.getBoundingClientRect();
-    const offset = targetRect.top - menuRect.top;
+    const headerNode = document.querySelector('[data-mobile-header]');
+    const headerOffset = headerNode?.getBoundingClientRect().height ?? 0;
+    const targetTop = target.getBoundingClientRect().top + window.scrollY;
+    const scrollTop = Math.max(0, targetTop - headerOffset - 16);
 
-    menu.scrollTo({
-      top: menu.scrollTop + offset - 16,
-      behavior: 'smooth',
-    });
+    window.scrollTo({ top: scrollTop, behavior: 'smooth' });
   }, [activeProductionKey, activeProduction]);
 
   if (!items || items.length === 0) {
@@ -372,10 +324,7 @@ export default function MobileNavMenu({
 
   return (
     <MenuWrapper
-      ref={menuRef}
       aria-label="Мобильное меню"
-      topOffset={topOffset}
-      condensed={condensed}
       footerOffset={footerOffset}
     >
       <MenuList>
@@ -385,7 +334,7 @@ export default function MobileNavMenu({
           const isExpanded = expandedItem === itemKey;
 
           return (
-            <li key={itemKey}>
+            <MenuItem key={itemKey}>
               {hasChildren ? (
                 <ToggleButton
                   type="button"
@@ -419,7 +368,10 @@ export default function MobileNavMenu({
                     const isPanelOpen = activeProductionKey === childKey && activeProduction;
 
                     return (
-                      <li key={childKey} ref={isProduction ? registerProductionRef(childKey) : undefined}>
+                      <SubMenuItem
+                        key={childKey}
+                        ref={isProduction ? registerProductionRef(childKey) : undefined}
+                      >
                         {isProduction ? (
                           isPanelOpen ? (
                             <ProductionPanelHolder
@@ -464,12 +416,12 @@ export default function MobileNavMenu({
                             <span>{child.label}</span>
                           </SubMenuButton>
                         )}
-                      </li>
+                      </SubMenuItem>
                     );
                   })}
                 </SubMenu>
               )}
-            </li>
+            </MenuItem>
           );
         })}
       </MenuList>

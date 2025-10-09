@@ -18,8 +18,10 @@ const MOBILE_LAYER_OVERLAY = 'var(--mobile-layer-overlay)';
 const Header = styled.header.withConfig({
   shouldForwardProp: (prop) => prop !== 'condensed',
 })`
-  position: fixed;
-  inset: 0 auto auto 0;
+  position: ${({ condensed }) => (condensed ? 'fixed' : 'relative')};
+  top: ${({ condensed }) => (condensed ? 0 : 'auto')};
+  left: ${({ condensed }) => (condensed ? 0 : 'auto')};
+  right: ${({ condensed }) => (condensed ? 0 : 'auto')};
   width: 100%;
   background: ${({ condensed }) => (condensed ? MOBILE_LAYER_BG_STRONG : MOBILE_LAYER_BG)};
   padding: ${({ condensed }) => (condensed ? '0.5rem 0.9rem' : '1rem 1.25rem 1.25rem')};
@@ -386,7 +388,7 @@ export default function MobileHeader({
   //const companyNameStacked = companyName.replace(/\s+/g, '\n');
 
   return (
-    <Header ref={headerRef} condensed={condensed}>
+    <Header ref={headerRef} condensed={condensed} data-mobile-header>
       {condensed ? (
         <CondensedBar>
           <CondensedBrand>

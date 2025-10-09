@@ -18,11 +18,11 @@ const Background = styled.div`
   }
 `;
 
-const Spacer = styled.div.withConfig({
+const HeaderSpacer = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== 'height',
 })`
   height: ${({ height = 0 }) => `${Math.max(0, height)}px`};
-  transition: height 180ms ease;
+  display: ${({ height = 0 }) => (height > 0 ? 'block' : 'none')};
 
   @media (min-width: 992px) {
     display: none;
@@ -30,13 +30,14 @@ const Spacer = styled.div.withConfig({
 `;
 
 export default function MobileNavigationShell({ items }) {
-  const [headerHeight, setHeaderHeight] = useState(80);
-  const [menuHeight, setMenuHeight] = useState(0);
+  const [headerHeight, setHeaderHeight] = useState(0);
   const [isHeaderCondensed, setIsHeaderCondensed] = useState(false);
   const [forceCondensed, setForceCondensed] = useState(false);
   const [footerHeight, setFooterHeight] = useState(0);
   const [isProductionPanelOpen, setIsProductionPanelOpen] = useState(false);
-  const [menuScrollElement, setMenuScrollElement] = useState(null);
+
+  const isFooterVisible = isHeaderCondensed || isProductionPanelOpen;
+  const spacerHeight = isHeaderCondensed ? headerHeight : 0;
 
   const handleHeaderHeightChange = useCallback((height) => {
     setHeaderHeight((current) => {
@@ -44,16 +45,6 @@ export default function MobileNavigationShell({ items }) {
       return Math.abs(current - height) > 1 ? height : current;
     });
   }, []);
-
-  const handleMenuHeightChange = useCallback((height) => {
-    setMenuHeight((current) => {
-      if (!height) return current;
-      return Math.abs(current - height) > 1 ? height : current;
-    });
-  }, []);
-
-  const isFooterVisible = isHeaderCondensed || isProductionPanelOpen;
-  const spacerHeight = headerHeight + menuHeight + (isFooterVisible ? footerHeight : 0);
 
   const handleProductionPanelToggle = useCallback((isOpen) => {
     setForceCondensed(isOpen);
@@ -70,17 +61,13 @@ export default function MobileNavigationShell({ items }) {
         onHeightChange={handleHeaderHeightChange}
         onCondensedChange={setIsHeaderCondensed}
         forceCondensed={forceCondensed}
-        scrollElement={menuScrollElement}
         scrollThreshold={{ enter: 96, exit: 32 }}
       />
+      <HeaderSpacer height={spacerHeight} />
       <MobileNavMenu
         items={items}
-        topOffset={headerHeight}
-        onHeightChange={handleMenuHeightChange}
-        condensed={isHeaderCondensed}
         onProductionPanelToggle={handleProductionPanelToggle}
         footerOffset={isFooterVisible ? footerHeight : 0}
-        onScrollContainerChange={setMenuScrollElement}
         defaultExpandedKey={"products"}
       />
       <MobileNavFooter
@@ -88,7 +75,6 @@ export default function MobileNavigationShell({ items }) {
         onHeightChange={setFooterHeight}
       />
       <MobileOrderCartIndicator bottomOffset={isFooterVisible ? footerHeight : 0} />
-      <Spacer height={spacerHeight} />
     </>
   );
 }
