@@ -150,8 +150,8 @@ const Panel = styled.section`
 const PanelHeader = styled.header`
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.85rem 1rem;
+  gap: 1rem;
+  padding: 0.85rem 0.3rem;
   position: sticky;
   top: 0;
   z-index: 1;
