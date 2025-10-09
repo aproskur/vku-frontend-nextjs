@@ -213,11 +213,12 @@ const HeroImageWrapper = styled.div`
 
 const HeroImage = styled.img`
   display: block;
-  max-width: 100%;
+  max-width: min(100%, 328px);
   width: auto;
   height: auto;
   box-sizing: border-box;
   border: 3px solid rgba(var(--text-grey), 0.5);
+  border-radius: 4px;
 `;
 
 const Section = styled.section`

@@ -215,6 +215,9 @@ function getScrollTop(target) {
 
 function useScrollTrigger(threshold = 40, scrollElement) {
   const [isPastThreshold, setIsPastThreshold] = useState(false);
+  const latestValueRef = useRef(isPastThreshold);
+  const isTouchingRef = useRef(false);
+  const pendingResetRef = useRef(false);
   const { enter: enterThreshold, exit: exitThreshold } = useMemo(() => {
     if (typeof threshold === 'number') {
       const enterValue = threshold;
@@ -235,6 +238,10 @@ function useScrollTrigger(threshold = 40, scrollElement) {
   }, [threshold]);
 
   useEffect(() => {
+    latestValueRef.current = isPastThreshold;
+  }, [isPastThreshold]);
+
+  useEffect(() => {
     if (typeof window === 'undefined') {
       return undefined;
     }
@@ -245,23 +252,63 @@ function useScrollTrigger(threshold = 40, scrollElement) {
       return undefined;
     }
 
+    const applyState = (nextValue) => {
+      if (nextValue !== latestValueRef.current) {
+        latestValueRef.current = nextValue;
+        setIsPastThreshold(nextValue);
+      }
+    };
+
+    const resolveNextState = (offset) => {
+      if (latestValueRef.current) {
+        return offset > exitThreshold;
+      }
+      return offset > enterThreshold;
+    };
+
     const handleScroll = () => {
       const offset = getScrollTop(target);
+      const next = resolveNextState(offset);
 
-      setIsPastThreshold((prev) => {
-        if (prev) {
-          return offset > exitThreshold;
-        }
-        return offset > enterThreshold;
-      });
+      if (isTouchingRef.current && latestValueRef.current && !next) {
+        pendingResetRef.current = true;
+        return;
+      }
+
+      pendingResetRef.current = false;
+      applyState(next);
+    };
+
+    const handleTouchStart = () => {
+      isTouchingRef.current = true;
+    };
+
+    const settleState = () => {
+      const offset = getScrollTop(target);
+      const next = resolveNextState(offset);
+      applyState(next);
+    };
+
+    const handleTouchEnd = () => {
+      isTouchingRef.current = false;
+      if (pendingResetRef.current) {
+        pendingResetRef.current = false;
+        settleState();
+      }
     };
 
     handleScroll();
 
     target.addEventListener('scroll', handleScroll, { passive: true });
+    target.addEventListener('touchstart', handleTouchStart, { passive: true });
+    target.addEventListener('touchend', handleTouchEnd, { passive: true });
+    target.addEventListener('touchcancel', handleTouchEnd, { passive: true });
 
     return () => {
       target.removeEventListener('scroll', handleScroll);
+      target.removeEventListener('touchstart', handleTouchStart);
+      target.removeEventListener('touchend', handleTouchEnd);
+      target.removeEventListener('touchcancel', handleTouchEnd);
     };
   }, [scrollElement, enterThreshold, exitThreshold]);
 
