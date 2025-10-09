@@ -3,6 +3,7 @@ import "./globals.css";
 import StyledComponentsRegistry from "../lib/registry";
 import MobileNavigationShell from "@/components/MobileNavigationShell";
 import { OrderProvider } from "@/context/OrderContext";
+import DesktopShell from "@/components/DesktopShell";
 
 export const mobileNavItems = [
   { key: "about", label: "О компании", href: "/about" },
@@ -267,8 +268,10 @@ export default function RootLayout({ children }) {
       <body className={`${geistSans.variable} ${geistMono.variable} ${ubuntu.variable}`}>
         <StyledComponentsRegistry>
           <OrderProvider>
+            <DesktopShell items={mobileNavItems}>
+              <main className="app-main-hidden-on-mobile">{children}</main>
+            </DesktopShell>
             <MobileNavigationShell items={mobileNavItems} />
-            <main className="app-main-hidden-on-mobile">{children}</main>
           </OrderProvider>
         </StyledComponentsRegistry>
       </body>

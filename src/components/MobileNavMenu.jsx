@@ -209,9 +209,10 @@ export default function MobileNavMenu({
   onProductionPanelToggle,
   footerOffset = 0,
   onScrollContainerChange,
+  defaultExpandedKey,
 }) {
   const menuRef = useRef(null);
-  const [expandedItem, setExpandedItem] = useState(null);
+  const [expandedItem, setExpandedItem] = useState(() => defaultExpandedKey ?? null);
   const [selectedLeafKey, setSelectedLeafKey] = useState(null);
   const [activeProduction, setActiveProduction] = useState(null);
   const [activeProductionKey, setActiveProductionKey] = useState(null);
@@ -420,11 +421,23 @@ export default function MobileNavMenu({
                     return (
                       <li key={childKey} ref={isProduction ? registerProductionRef(childKey) : undefined}>
                         {isProduction ? (
-                          <>
+                          isPanelOpen ? (
+                            <ProductionPanelHolder
+                              id={`production-panel-${childKey}`}
+                              ref={setActivePanelNode}
+                            >
+                              <MobileNavProductionPanel
+                                product={activeProduction}
+                                onClose={handleCloseProduction}
+                              />
+                            </ProductionPanelHolder>
+                          ) : (
                             <ProductionRow>
                               <IconButton
                                 type="button"
                                 aria-label={isActive ? 'Скрыть товар' : 'Показать товар'}
+                                aria-expanded={isPanelOpen}
+                                aria-controls={`production-panel-${childKey}`}
                                 onClick={(event) =>
                                   handleSelect(event, { ...child, parentKey: itemKey })
                                 }
@@ -441,15 +454,7 @@ export default function MobileNavMenu({
                                 }
                               />
                             </ProductionRow>
-                            {isPanelOpen ? (
-                              <ProductionPanelHolder ref={setActivePanelNode}>
-                                <MobileNavProductionPanel
-                                  product={activeProduction}
-                                  onClose={handleCloseProduction}
-                                />
-                              </ProductionPanelHolder>
-                            ) : null}
-                          </>
+                          )
                         ) : (
                           <SubMenuButton
                             type="button"

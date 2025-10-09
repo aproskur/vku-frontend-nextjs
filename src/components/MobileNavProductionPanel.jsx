@@ -206,12 +206,13 @@ const PanelBody = styled.div`
 
 const HeroImageWrapper = styled.div`
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  display: flex;
+  justify-content: center;
 `;
 
 const HeroImage = styled.img`
-  width: 100%;
-  height: 450px;
+  max-width: 328px;
+  max-height: 450px;
   display: block;
   border: 3px solid rgba(var(--text-grey), 0.5);
 `; 

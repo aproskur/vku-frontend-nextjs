@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import {
   PhoneIcon,
@@ -215,6 +215,24 @@ function getScrollTop(target) {
 
 function useScrollTrigger(threshold = 40, scrollElement) {
   const [isPastThreshold, setIsPastThreshold] = useState(false);
+  const { enter: enterThreshold, exit: exitThreshold } = useMemo(() => {
+    if (typeof threshold === 'number') {
+      const enterValue = threshold;
+      return {
+        enter: enterValue,
+        exit: Math.max(0, Math.min(enterValue, Math.round(enterValue * 0.5))),
+      };
+    }
+
+    const enterValue = typeof threshold?.enter === 'number' ? threshold.enter : 40;
+    const providedExit = typeof threshold?.exit === 'number' ? threshold.exit : undefined;
+    const exitValue = providedExit ?? Math.max(0, Math.min(enterValue, Math.round(enterValue * 0.5)));
+
+    return {
+      enter: enterValue,
+      exit: exitValue,
+    };
+  }, [threshold]);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -228,7 +246,14 @@ function useScrollTrigger(threshold = 40, scrollElement) {
     }
 
     const handleScroll = () => {
-      setIsPastThreshold(getScrollTop(target) > threshold);
+      const offset = getScrollTop(target);
+
+      setIsPastThreshold((prev) => {
+        if (prev) {
+          return offset > exitThreshold;
+        }
+        return offset > enterThreshold;
+      });
     };
 
     handleScroll();
@@ -238,7 +263,7 @@ function useScrollTrigger(threshold = 40, scrollElement) {
     return () => {
       target.removeEventListener('scroll', handleScroll);
     };
-  }, [scrollElement, threshold]);
+  }, [scrollElement, enterThreshold, exitThreshold]);
 
   return isPastThreshold;
 }

@@ -71,6 +71,7 @@ export default function MobileNavigationShell({ items }) {
         onCondensedChange={setIsHeaderCondensed}
         forceCondensed={forceCondensed}
         scrollElement={menuScrollElement}
+        scrollThreshold={{ enter: 96, exit: 32 }}
       />
       <MobileNavMenu
         items={items}
@@ -80,6 +81,7 @@ export default function MobileNavigationShell({ items }) {
         onProductionPanelToggle={handleProductionPanelToggle}
         footerOffset={isFooterVisible ? footerHeight : 0}
         onScrollContainerChange={setMenuScrollElement}
+        defaultExpandedKey={"products"}
       />
       <MobileNavFooter
         visible={isFooterVisible}
