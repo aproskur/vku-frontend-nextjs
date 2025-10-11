@@ -11,12 +11,17 @@ const MenuWrapper = styled.nav.withConfig({
 })`
   ${({ footerOffset = 0 }) => {
     const safeOffset = Number.isFinite(footerOffset) ? Math.max(0, footerOffset) : 0;
-    return `padding: 1.25rem 1rem calc(2rem + ${safeOffset}px);`;
+    return `
+      min-height: 100vh;
+      padding: 1.25rem 1rem calc(2rem + ${safeOffset}px);
+    `;
   }}
   background: rgba(21, 25, 31, 0.6);
   color: #f5f7fb;
   width: 100%;
   position: relative;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   z-index: 1;
 
   @media (min-width: 992px) {
