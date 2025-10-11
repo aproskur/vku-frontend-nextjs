@@ -146,7 +146,6 @@ const PhoneText = styled.div`
   font-weight: 400;
   color: inherit;
   white-space: nowrap;
-  letter-spacing: 1.5x;
 
   span:first-child {
     font-size: 12px;
@@ -269,7 +268,7 @@ function useScrollTrigger(threshold = 40, scrollElement) {
     };
 
     const handleScroll = () => {
-      const offset = getScrollTop(target);
+      const offset = Math.max(0, getScrollTop(target));
       const next = resolveNextState(offset);
 
       if (isTouchingRef.current && latestValueRef.current && !next) {

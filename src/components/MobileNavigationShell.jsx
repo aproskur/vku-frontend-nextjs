@@ -61,7 +61,7 @@ export default function MobileNavigationShell({ items }) {
         onHeightChange={handleHeaderHeightChange}
         onCondensedChange={setIsHeaderCondensed}
         forceCondensed={forceCondensed}
-        scrollThreshold={{ enter: 96, exit: 32 }}
+        scrollThreshold={{ enter: 380, exit: 260 }}
       />
       <HeaderSpacer height={spacerHeight} />
       <MobileNavMenu
