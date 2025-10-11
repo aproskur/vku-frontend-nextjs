@@ -235,7 +235,9 @@ export const mobileNavItems = [
         ctaHref: "/order?product=product-beton",
       },
     ],
+    
   },
+  { key: "calculator", label: "Калькулятор", href: "#" },
 ];
 
 

@@ -1,14 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
-import {
-  PhoneIcon,
-  EmailIcon,
-  TelegramIcon,
-  WhatsappIcon,
-  MapIcon,
-  ChatIcon,
-} from '@/components/ContactIcons';
+import DesktopSocialLinks from '@/components/DesktopSocialLinks';
 
 const SidebarRoot = styled.aside`
   display: none;
@@ -16,18 +9,23 @@ const SidebarRoot = styled.aside`
   @media (min-width: 992px) {
     display: flex;
     flex-direction: column;
-    padding: 48px 40px;
-    background: rgba(var(--clr-dark-blue), 0.6);
-    color: rgb(var(--text));
+    align-items: flex-start;
+    width: 440px;
+    min-width: 440px;
     height: 100vh;
+    padding: 48px 40px;
+    background: rgba(61, 84, 119, 0.5);
+    color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(2px);
     overflow-y: auto;
-    min-width: 391px;
+    box-sizing: border-box;
   }
 `;
 
 const LogoBlock = styled.div`
   display: grid;
-  gap: 16px;
+  gap: 20px;
+  align-items: flex-start;
 `;
 
 const LogoImage = styled.img`
@@ -36,60 +34,82 @@ const LogoImage = styled.img`
 `;
 
 const CompanyInfo = styled.div`
-  font-size: 0.95rem;
-  line-height: 1.6;
-`;
-
-const IconRow = styled.div`
-  display: flex;
-  gap: 12px;
-  margin-top: 16px;
-`;
-
-const IconButton = styled.a`
-  width: 32px;
-  height: 32px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  transition: background 180ms ease;
-
-  &:hover,
-  &:focus-visible {
-    background: rgba(255, 255, 255, 0.2);
-  }
+  font-size: 1.25rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.9);
 `;
 
 const NavSection = styled.nav`
-  margin-top: 48px;
+  margin-top: 40px;
   display: grid;
   gap: 8px;
-  font-size: 1.05rem;
+  font-size: 1.25rem;
 `;
 
 const NavHeading = styled.span`
-  font-size: 1.15rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.65);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: default;
 `;
 
-const NavButton = styled.button`
+const NavButton = styled.button.attrs({ type: 'button' })`
   background: none;
   border: none;
-  color: ${({ $active }) => ($active ? 'rgb(var(--clr-sunny))' : 'rgba(255, 255, 255, 0.9)')};
+  color: ${({ $active }) => ($active ? 'rgb(var(--clr-sunny))' : 'rgba(255, 255, 255, 0.95)')};
   font: inherit;
+  font-weight: 400;
   text-align: left;
   cursor: pointer;
-  padding: 8px 0;
-  transition: color 160ms ease;
+  padding: 4px 0;
+  line-height: 1.8;
+  transition: color 160ms ease, transform 160ms ease;
 
   &:hover,
   &:focus-visible {
     color: rgb(var(--clr-sunny));
+    transform: translateX(2px);
   }
+`;
+
+const ProductsBlock = styled.div`
+  display: grid;
+  gap: 8px;
+`;
+
+const ProductsGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-left: 13px;
+  border-left: 1px solid #dddddd;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+`;
+
+const ProductButton = styled(NavButton)`
+  display: inline-flex;
+  align-items: baseline;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.4;
+  padding: 2px 0;
+`;
+
+const ProductLabel = styled.span`
+  flex: none;
+`;
+
+const ProductPrice = styled.span`
+  flex: none;
+  font-size: 1.25rem;
+  font-weight: 300;
+  color: rgba(164, 158, 158, 0.8);
+  white-space: nowrap;
 `;
 
 export default function DesktopSidebar({ items = [], onProductSelect, activeProduct }) {
@@ -98,7 +118,6 @@ export default function DesktopSidebar({ items = [], onProductSelect, activeProd
   }
 
   const productsGroup = items.find((item) => item.key === 'products' || item.label === 'Продукция');
-  const staticItems = items.filter((item) => item !== productsGroup);
 
   return (
     <SidebarRoot>
@@ -109,48 +128,37 @@ export default function DesktopSidebar({ items = [], onProductSelect, activeProd
           <br />8 (8172) 50-56-65
           <br />info@VKU.group
         </CompanyInfo>
-        <IconRow>
-          <IconButton href="tel:+78172505665" aria-label="Позвонить">
-            <PhoneIcon />
-          </IconButton>
-          <IconButton href="mailto:info@VKU.group" aria-label="Написать письмо">
-            <EmailIcon />
-          </IconButton>
-          <IconButton href="https://t.me/VKU" aria-label="Открыть Telegram">
-            <TelegramIcon />
-          </IconButton>
-          <IconButton href="https://wa.me/78172505665" aria-label="Написать в WhatsApp">
-            <WhatsappIcon />
-          </IconButton>
-          <IconButton href="#map" aria-label="Показать на карте">
-            <MapIcon />
-          </IconButton>
-          <IconButton href="#contact" aria-label="Написать сообщение">
-            <ChatIcon />
-          </IconButton>
-        </IconRow>
+        <DesktopSocialLinks />
       </LogoBlock>
 
       <NavSection>
-        {staticItems.map((item) => (
-          <NavButton key={item.key ?? item.label}>{item.label}</NavButton>
-        ))}
-      </NavSection>
+        {items.map((item) => {
+          if (item === productsGroup) {
+            const productChildren = Array.isArray(item.children) ? item.children : [];
+            return (
+              <ProductsBlock key={item.key ?? item.label}>
+                <NavHeading>{item.label}</NavHeading>
+                {productChildren.length > 0 ? (
+                  <ProductsGroup>
+                    {productChildren.map((product) => (
+                      <ProductButton
+                        key={product.key ?? product.label}
+                        onClick={() => onProductSelect?.(product)}
+                        $active={activeProduct?.key === product.key}
+                      >
+                        <ProductLabel>{product.label}</ProductLabel>
+                        {product.price ? <ProductPrice>{product.price}</ProductPrice> : null}
+                      </ProductButton>
+                    ))}
+                  </ProductsGroup>
+                ) : null}
+              </ProductsBlock>
+            );
+          }
 
-      {productsGroup ? (
-        <NavSection>
-          <NavHeading>{productsGroup.label}</NavHeading>
-          {productsGroup.children?.map((product) => (
-            <NavButton
-              key={product.key ?? product.label}
-              onClick={() => onProductSelect?.(product)}
-              $active={activeProduct?.key === product.key}
-            >
-              {product.label}{product.price ? ` ${product.price}` : ''}
-            </NavButton>
-          ))}
-        </NavSection>
-      ) : null}
+          return <NavButton key={item.key ?? item.label}>{item.label}</NavButton>;
+        })}
+      </NavSection>
     </SidebarRoot>
   );
 }

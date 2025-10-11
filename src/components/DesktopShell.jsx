@@ -24,10 +24,10 @@ export default function DesktopShell({ items = [], children }) {
   return (
     <>
       <DesktopRoot>
-       {/* <DesktopSidebar items={items} onProductSelect={handleProductSelect} activeProduct={activeProduction} /> */}
-       {/* <DesktopMain>
-          <DesktopProductPanel product={activeProduction} onProductSelect={handleProductSelect} />
-        </DesktopMain> */}
+      <DesktopSidebar items={items} onProductSelect={handleProductSelect} activeProduct={activeProduction} /> 
+       <DesktopMain>
+        {/* <DesktopProductPanel product={activeProduction} onProductSelect={handleProductSelect} /> */}
+        </DesktopMain> 
         <DesktopActions product={activeProduction} />
       </DesktopRoot>
       {children}
@@ -41,7 +41,7 @@ const DesktopRoot = styled.div`
     position: fixed;
     inset: 0;
     display: grid;
-    grid-template-columns: 360px 1fr;
+    grid-template-columns: 391px minmax(0, 1fr);
     background: url('/images/background-desktop.webp') center / cover no-repeat;
     color: rgb(var(--text));
   }
