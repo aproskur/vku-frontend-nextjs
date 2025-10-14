@@ -1,13 +1,19 @@
 'use client';
 
-import { useMemo, useState, useCallback } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import DesktopSidebar from '@/components/DesktopSidebar';
 import DesktopProductPanel from '@/components/DesktopProductPanel';
 import DesktopActions from '@/components/DesktopActions';
 
 export default function DesktopShell({ items = [], children }) {
-  const [activeProduction, setActiveProduction] = useState(null);
+  const [activeProduction, setActiveProduction] = useState(() => {
+    const productsGroup = items.find((item) => item.key === 'products' || item.label === 'Продукция');
+    if (!productsGroup || !Array.isArray(productsGroup.children) || productsGroup.children.length === 0) {
+      return null;
+    }
+    return productsGroup.children[0];
+  });
 
   const productionItems = useMemo(() => {
     const productsGroup = items.find((item) => item.key === 'products' || item.label === 'Продукция');
@@ -16,6 +22,29 @@ export default function DesktopShell({ items = [], children }) {
     }
     return productsGroup.children;
   }, [items]);
+
+  useEffect(() => {
+    if (productionItems.length === 0) {
+      if (activeProduction !== null) {
+        setActiveProduction(null);
+      }
+      return;
+    }
+
+    if (!activeProduction) {
+      setActiveProduction(productionItems[0]);
+      return;
+    }
+
+    const activeKey = activeProduction.key ?? activeProduction.label;
+    const existsInList = productionItems.some(
+      (product) => (product.key ?? product.label) === activeKey,
+    );
+
+    if (!existsInList) {
+      setActiveProduction(productionItems[0]);
+    }
+  }, [productionItems, activeProduction]);
 
   const handleProductSelect = useCallback((product) => {
     setActiveProduction(product);
@@ -26,7 +55,7 @@ export default function DesktopShell({ items = [], children }) {
       <DesktopRoot>
       <DesktopSidebar items={items} onProductSelect={handleProductSelect} activeProduct={activeProduction} /> 
        <DesktopMain>
-        {/* <DesktopProductPanel product={activeProduction} onProductSelect={handleProductSelect} /> */}
+         <DesktopProductPanel product={activeProduction} onProductSelect={handleProductSelect} /> 
         </DesktopMain> 
         <DesktopActions product={activeProduction} />
       </DesktopRoot>
