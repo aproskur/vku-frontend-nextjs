@@ -43,6 +43,7 @@ const PanelHeader = styled.button`
   color: inherit;
   cursor: pointer;
   text-align: left;
+  border-bottom: 1px solid #fff;
 `;
 
 const Title = styled.h1`
@@ -51,10 +52,12 @@ const Title = styled.h1`
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #ffffff;
+  line-height: 2;
 `;
 
 const PanelTitle = styled(Title)`
   flex: 1;
+
 `;
 
 const DescriptionBlock = styled.div`
@@ -160,7 +163,7 @@ const Chevron = styled.span`
   display: inline-flex;
   width: 24px;
   height: 24px;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
 
   &::before {
@@ -246,7 +249,6 @@ export default function DesktopProductPanel({ product }) {
           <PanelTitle>{label}</PanelTitle>
           <Chevron aria-hidden="true" $direction={isDescriptionOpen ? 'up' : 'down'} />
         </PanelHeader>
-        <PanelDivider />
         {description ? (
           <Collapsible
             $isOpen={isDescriptionOpen}
