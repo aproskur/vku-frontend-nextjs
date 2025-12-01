@@ -10,6 +10,7 @@ const PanelRoot = styled.section`
     display: flex;
     flex-direction: column;
     width: 100%;
+    min-width: 0;
     min-height: 100vh;
     overflow: visible;
     color: rgba(255, 255, 255, 0.9);
@@ -20,12 +21,13 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
-  padding: 72px 90px 50px;
+  padding: 56px 48px 44px;
   width: 100%;
-  max-width: min(1100px, calc(100% - 90px));
-  margin-left: 40px;
-  margin-right: auto;
-  box-sizing: border-box;
+  max-width: 100%;
+  margin: 0;
+  min-width: 0;
+  max-width: min(1100px, calc(100% - 48px));
+
 `;
 
 const PanelHeader = styled.button`
@@ -84,6 +86,7 @@ const MainGrid = styled.div`
     $hasImage ? 'clamp(320px, 33vw, 420px) minmax(0, 1fr)' : 'minmax(0, 1fr)'};
   gap: 48px;
   align-items: start;
+  min-width: 0;
 `;
 
 const ImageFrame = styled.div`
@@ -106,6 +109,7 @@ const DetailsColumn = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
+  min-width: 0;
 `;
 
 const Section = styled.section`

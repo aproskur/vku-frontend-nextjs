@@ -51,16 +51,15 @@ export default function DesktopShell({ items = [], children }) {
   }, []);
 
   return (
-    <>
       <DesktopRoot>
-      <DesktopSidebar items={items} onProductSelect={handleProductSelect} activeProduct={activeProduction} /> 
-       <DesktopMain>
-         <DesktopProductPanel product={activeProduction} onProductSelect={handleProductSelect} /> 
-        </DesktopMain> 
+        <DesktopSidebar items={items} onProductSelect={handleProductSelect} activeProduct={activeProduction} /> 
+          <DesktopMain>
+            <DesktopProductPanel product={activeProduction} 
+                                  onProductSelect={handleProductSelect} /> 
+            { children }
+          </DesktopMain> 
         <DesktopActions product={activeProduction} />
       </DesktopRoot>
-      {children}
-    </>
   );
 }
 
@@ -71,7 +70,7 @@ const DesktopRoot = styled.div`
     min-height: 100vh;
     width: 100%;
     display: grid;
-    grid-template-columns: 391px minmax(0, 1fr);
+    grid-template-columns: 440px minmax(0, 1fr);
     color: rgb(var(--text));
   }
 `;
@@ -81,4 +80,5 @@ const DesktopMain = styled.main`
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 `;

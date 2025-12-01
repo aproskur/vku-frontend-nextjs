@@ -36,6 +36,7 @@ const CompanyInfo = styled.div`
   font-size: 1.25rem;
   line-height: 1.4;
   color: rgba(255, 255, 255, 0.9);
+  overflow-wrap: anywhere;
 `;
 
 const NavSection = styled.nav`
@@ -64,6 +65,7 @@ const NavButton = styled.button.attrs({ type: 'button' })`
   padding: 4px 0;
   line-height: 1.8;
   transition: color 160ms ease, transform 160ms ease;
+  overflow-wrap: anywhere;
 
   &:hover,
   &:focus-visible {
@@ -92,20 +94,24 @@ const ProductsGroup = styled.div`
 
 const ProductButton = styled(NavButton)`
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   gap: 12px;
   color: rgba(255, 255, 255, 0.95);
   line-height: 1.4;
   padding: 2px 0;
+  max-width: 100%;
+  flex-wrap: wrap;
 `;
 
 const ProductLabel = styled.span`
-  flex: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
 `;
 
 const ProductPrice = styled.span`
   flex: none;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 300;
   color: rgba(164, 158, 158, 0.8);
   white-space: nowrap;
