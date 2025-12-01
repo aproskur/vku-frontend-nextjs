@@ -107,14 +107,17 @@ const ProductLabel = styled.span`
   flex: 1 1 auto;
   min-width: 0;
   overflow-wrap: anywhere;
+  color: ${({ $active }) => ($active ? 'rgb(var(--clr-sunny))' : 'inherit')};
+  transition: color 160ms ease;
 `;
 
 const ProductPrice = styled.span`
   flex: none;
   font-size: 1.1rem;
   font-weight: 300;
-  color: rgba(164, 158, 158, 0.8);
+  color: ${({ $active }) => ($active ? 'rgb(var(--clr-sunny))' : 'rgba(164, 158, 158, 0.8)')};
   white-space: nowrap;
+  transition: color 160ms ease;
 `;
 
 export default function DesktopSidebar({ items = [], onProductSelect, activeProduct }) {
@@ -151,8 +154,14 @@ export default function DesktopSidebar({ items = [], onProductSelect, activeProd
                         onClick={() => onProductSelect?.(product)}
                         $active={activeProduct?.key === product.key}
                       >
-                        <ProductLabel>{product.label}</ProductLabel>
-                        {product.price ? <ProductPrice>{product.price}</ProductPrice> : null}
+                        <ProductLabel $active={activeProduct?.key === product.key}>
+                          {product.label}
+                        </ProductLabel>
+                        {product.price ? (
+                          <ProductPrice $active={activeProduct?.key === product.key}>
+                            {product.price}
+                          </ProductPrice>
+                        ) : null}
                       </ProductButton>
                     ))}
                   </ProductsGroup>
