@@ -12,12 +12,11 @@ const SidebarRoot = styled.aside`
     align-items: flex-start;
     width: 440px;
     min-width: 440px;
-    height: 100vh;
+    min-height: 100vh;
     padding: 48px 40px;
     background: rgba(61, 84, 119, 0.5);
     color: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(2px);
-    overflow-y: auto;
     box-sizing: border-box;
   }
 `;

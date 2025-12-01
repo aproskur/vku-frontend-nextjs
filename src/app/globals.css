@@ -16,12 +16,14 @@ body {
   overflow-x: hidden;
 }
 
+
 body {
   color: rgb(var(--text));
   background: rgb(var(--clr-dark-blue));
   font-family: var(--font-ubuntu), "Ubuntu", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: relative;
 }
 
 .app-main-hidden-on-mobile {
@@ -40,6 +42,21 @@ body {
     display: none;
   }
 }
+
+@media (min-width: 992px) {
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
+      url('/images/background-desktop.webp') center / cover no-repeat;
+    pointer-events: none;
+  }
+}
+
+
 
 * {
   box-sizing: border-box;

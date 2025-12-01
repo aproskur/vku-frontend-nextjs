@@ -67,11 +67,11 @@ export default function DesktopShell({ items = [], children }) {
 const DesktopRoot = styled.div`
   display: none;
   @media (min-width: 992px) {
-    position: fixed;
-    inset: 0;
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
     display: grid;
     grid-template-columns: 391px minmax(0, 1fr);
-    background: url('/images/background-desktop.webp') center / cover no-repeat;
     color: rgb(var(--text));
   }
 `;

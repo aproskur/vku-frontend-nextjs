@@ -10,8 +10,8 @@ const PanelRoot = styled.section`
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100vh;
-    overflow-y: auto;
+    min-height: 100vh;
+    overflow: visible;
     color: rgba(255, 255, 255, 0.9);
   }
 `;
