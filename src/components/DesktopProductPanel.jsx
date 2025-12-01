@@ -43,7 +43,7 @@ const PanelHeader = styled.button`
   color: inherit;
   cursor: pointer;
   text-align: left;
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, .65);
 `;
 
 const Title = styled.h1`
