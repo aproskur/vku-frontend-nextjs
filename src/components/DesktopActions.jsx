@@ -26,8 +26,8 @@ const OrderButton = styled.button`
 
   @media (min-width: 992px) {
     display: block;
-    width: 89px;
-    height: 83px;
+    width: 80px;
+    height: 75px;
     padding: 0;
     border: none;
     background: none;
@@ -62,8 +62,8 @@ const ChatButton = styled.a`
 
   @media (min-width: 992px) {
     display: block;
-    width: 79px;
-    height: 72px;
+    width: 71px;
+    height: 65px;
     padding: 0;
     border: none;
     background: none;

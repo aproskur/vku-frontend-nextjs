@@ -38,7 +38,7 @@ const LogoBlock = styled.div`
 `;
 
 const LogoImage = styled.img`
-  width: 328px;
+  width: 295px;
   height: auto;
 `;
 

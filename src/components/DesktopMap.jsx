@@ -7,18 +7,18 @@ import styled from 'styled-components';
 const HOTSPOTS = [
   {
     id: 'overlay1',
-    cx: 472,
-    cy: 396,
+    cx: 1110,
+    cy: 441,
     r: 20,
-    fill: 'rgba(0, 255, 0, 0.5)', // tmp
-    overlayHref: '/images/road-1.webp',
+    fill: 'rgba(0, 0, 0, 0)',
+    overlayHref: '/images/roads-yurochkino.webp',
   },
   {
     id: 'overlay2',
     cx: 520,
     cy: 539,
     r: 20,
-    fill: 'rgba(255, 192, 203, 0.5)', // tmp
+    fill: 'rgba(0, 0, 0, 0)',
     overlayHref: '/images/road-2.webp',
   },
 ];
@@ -30,16 +30,22 @@ export default function DesktopMap() {
     <MapSection>
       <MapContainer>
         <MapSvg
-          viewBox="0 0 1800 1012"
-          preserveAspectRatio="xMidYMid slice"
+          viewBox="0 0 1920 1080"
+          preserveAspectRatio="xMidYMid meet"
+            onMouseMove={(e) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) * 1920) / width;
+    const y = ((e.clientY - top) * 1080) / height;
+    console.log(Math.round(x), Math.round(y));
+  }}
         >
           {/* Base map image (main PNG/WebP from designer) */}
           <image
-            href="/images/map-main.webp" // must be under public/images/map-main.webp
+            href="/images/map-desktop.webp" // must be under public/images/map-main.webp
             x="0"
             y="0"
-            width="1800"
-            height="1012"
+            width="1920"
+            height="1080"
           />
 
           {/* Overlays (full-size images that sit on top of the base map) */}
@@ -49,8 +55,8 @@ export default function DesktopMap() {
               href={spot.overlayHref}
               x="0"
               y="0"
-              width="1800"
-              height="1012"
+              width="1920"
+              height="1080"
               $visible={activeOverlayId === spot.id}
             />
           ))}

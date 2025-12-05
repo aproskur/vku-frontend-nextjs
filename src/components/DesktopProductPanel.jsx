@@ -26,7 +26,7 @@ const Content = styled.div`
   max-width: 100%;
   margin: 0;
   min-width: 0;
-  max-width: min(1100px, calc(100% - 48px));
+  max-width: min(1200px, calc(100% - 48px));
   align-self: center;
 `;
 
@@ -48,7 +48,7 @@ const PanelHeader = styled.button`
 
 const Title = styled.h1`
   margin: 0;
-  font-size: 3rem;
+  font-size: var(--h1);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #ffffff;

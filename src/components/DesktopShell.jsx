@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState, useCallback } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import DesktopSidebar from '@/components/DesktopSidebar';
 import DesktopProductPanel from '@/components/DesktopProductPanel';
@@ -80,7 +80,6 @@ const handleSidebarSelect = (itemKey, item) => {
     handleProductSelect(item);
   }
 };
-
 
   return (
       <DesktopRoot>
