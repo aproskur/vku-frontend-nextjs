@@ -12,12 +12,22 @@ const SidebarRoot = styled.aside`
     align-items: flex-start;
     width: 440px;
     min-width: 440px;
+    height: 100vh;
     min-height: 100vh;
     padding: 48px 40px;
     background: rgba(61, 84, 119, 0.5);
     color: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(2px);
     box-sizing: border-box;
+    z-index: 2;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 `;
 
@@ -120,7 +130,7 @@ const ProductPrice = styled.span`
   transition: color 160ms ease;
 `;
 
-export default function DesktopSidebar({ items = [], onProductSelect, activeProduct }) {
+export default function DesktopSidebar({ items = [], onItemSelect, onProductSelect, activeProduct }) {
   if (!items || items.length === 0) {
     return null;
   }
@@ -170,7 +180,14 @@ export default function DesktopSidebar({ items = [], onProductSelect, activeProd
             );
           }
 
-          return <NavButton key={item.key ?? item.label}>{item.label}</NavButton>;
+          return( 
+          <NavButton key={item.key ?? item.label} 
+                      onClick={()=>onItemSelect?.(item?.key ?? item?.label, item)}
+            >
+            {item.label}
+
+          </NavButton>
+          );
         })}
       </NavSection>
     </SidebarRoot>

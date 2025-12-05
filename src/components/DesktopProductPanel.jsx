@@ -27,7 +27,7 @@ const Content = styled.div`
   margin: 0;
   min-width: 0;
   max-width: min(1100px, calc(100% - 48px));
-
+  align-self: center;
 `;
 
 const PanelHeader = styled.button`
